@@ -20,7 +20,7 @@ class PyTest(TestCommand):
 
 setuptools.setup(
     name="arcus-ml", # Replace with your own username
-    version=arcus.__version__,
+    version=arcus.ml.__version__,
     author="Arcus",
     author_email="arcus-automation@codit.eu",
     tests_require=['pytest'],
