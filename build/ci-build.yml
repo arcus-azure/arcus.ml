@@ -78,8 +78,13 @@ steps:
     pythonUploadServiceConnection: 'Arcus AzureML PyPi feed'
 
 - script: |
-   python3 pdoc --html --config show_source_code=False -o docs/ src/arcus
+   python pdoc --html --config show_source_code=False -o docs/ src/arcus
   displayName: 'Generate code documentation'
+
+- script: |
+   python pdoc --html --config show_source_code=False -o docs/ src/arcus
+  displayName: 'Generate code documentation'
+  condition: succeededOrFailed()
 
 - script: |
    python -m twine upload --skip-existing --verbose -r 'arcus-azureml' --config-file $(PYPIRC_PATH) dist/*.whl
