@@ -1,2 +1,6 @@
+logging
 numpy
 pandas
+tensorflow
+keras
+plaidml
