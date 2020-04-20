@@ -78,16 +78,7 @@ steps:
     pythonUploadServiceConnection: 'Arcus AzureML PyPi feed'
 
 - script: |
-   python pdoc --html --config show_source_code=False -o docs/ src/arcus
-  displayName: 'Generate code documentation'
-
-- script: |
-   python3 pdoc --html --config show_source_code=False -o docs/ src/arcus
-  displayName: 'Generate code documentation'
-  condition: succeededOrFailed()
-
-- script: |
-   python3 pdoc --html --config show_source_code=False -o docs/ src/arcus
+   pdoc --html --config show_source_code=False -o docs/ src/arcus
   displayName: 'Generate code documentation'
   condition: succeededOrFailed()
 
