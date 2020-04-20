@@ -75,7 +75,7 @@ steps:
 
 - task: TwineAuthenticate@1
   inputs:
-    pythonUploadServiceConnection: 'Arcus AzureML PyPi feed'
+    pythonUploadServiceConnection: 'Arcus ML PyPi feed'
 
 - script: |
    pdoc --html --config show_source_code=False -o docs/ src/arcus
@@ -83,7 +83,7 @@ steps:
   condition: succeededOrFailed()
 
 - script: |
-   python -m twine upload --skip-existing --verbose -r 'arcus-azureml' --config-file $(PYPIRC_PATH) dist/*.whl
+   python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*.whl
   displayName: 'Publish to PyPi dev'
 
 - task: CopyFiles@2  
