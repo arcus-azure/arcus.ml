@@ -1,0 +1,97 @@
+name: $(date:yyyyMMdd)$(rev:rr)
+
+trigger:
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - src/*
+
+pr:
+  paths:
+    include:
+    - src/*
+    - build/ci-build.yml
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: arcus-azure/azure-devops-templates
+      endpoint: arcus-azure
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- template: 'pypi/determine-pr-version.yml@templates'
+  parameters:
+    manualTriggerVersion: preview
+
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '3.7'
+    addToPath: true
+    architecture: 'x64'
+
+- task: Bash@3
+  displayName: 'Update version number'
+  inputs:
+    targetType: 'inline'
+    script: 'sed -i ''s/1.0.0/1.0.0.$(Build.BuildNumber)/g'' src/arcus/ml/__init__.py'
+    failOnStderr: true
+    
+- script: python -m pip install --upgrade pip setuptools wheel pdoc3
+  displayName: 'Install tools'
+
+- script: pip install -r src/requirements.txt
+  displayName: 'Install requirements'
+
+- script: |
+    pip install pytest
+    pip install pytest-cov
+    pytest src/tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
+  displayName: 'Unit tests (pytest)'
+
+- task: PublishTestResults@2
+  condition: succeededOrFailed()
+  inputs:
+    testResultsFiles: '**/test-*.xml'
+    testRunTitle: 'Publish test results for Python $(python.version)'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+
+- script: |    
+    python src/setup.py bdist_wheel 
+  displayName: 'Build wheels'
+
+- script: python -m pip install --upgrade twine
+  displayName: 'Install Twine'
+
+- task: TwineAuthenticate@1
+  inputs:
+    pythonUploadServiceConnection: 'Arcus ML PyPi feed'
+
+- script: |
+   pdoc --html --config show_source_code=False -o docs/ src/arcus
+  displayName: 'Generate code documentation'
+  condition: succeededOrFailed()
+
+- script: |
+   python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*.whl
+  displayName: 'Publish to PyPi dev'
+
+- task: CopyFiles@2  
+  inputs:    
+    targetFolder: $(Build.ArtifactStagingDirectory)
+
+- task: PublishBuildArtifacts@1  
+  inputs:    
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'                  
+    ArtifactName: 'dist'    
+    publishLocation: 'Container'
