@@ -39,10 +39,10 @@ steps:
 
 - task: TwineAuthenticate@1
   inputs:
-    pythonUploadServiceConnection: 'Arcus AzureML PyPi feed'
+    pythonUploadServiceConnection: 'Arcus ML PyPi feed'
 
 - script: |
-   python -m twine upload --skip-existing --verbose -r 'arcus-azureml' --config-file $(PYPIRC_PATH) dist/*.whl
+   python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*.whl
   displayName: 'Publish to PyPi'
 
 - task: CopyFiles@2  
