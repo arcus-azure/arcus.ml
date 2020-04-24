@@ -14,8 +14,6 @@ def enable_gpu() -> bool:
     First it checks if there's a "physical device" available of type GPU
     If not, it will try to leverage plaidml for GPU enabling
 
-    Args:
-
     Returns: 
         bool: A boolean value indicating if the GPU enablement succeeded
     '''
