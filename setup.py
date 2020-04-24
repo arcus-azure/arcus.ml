@@ -35,7 +35,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/arcus-azure/arcus.ml",
-    packages=setuptools.packages_to_import,
+    packages=packages_to_import,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
