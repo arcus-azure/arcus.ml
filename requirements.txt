@@ -1,2 +1,5 @@
 numpy
 pandas
+tensorflow
+keras
+plaidml
