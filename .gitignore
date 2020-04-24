@@ -128,7 +128,7 @@ dmypy.json
 .pyre/
 
 
-
+docs/arcus/
 docs/_site
 src/.DS_Store
 .DS_Store
