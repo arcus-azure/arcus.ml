@@ -18,6 +18,12 @@ class PyTest(TestCommand):
         errcode = pytest.main(self.test_args)
         sys.exit(errcode)
 
+packages_to_import = setuptools.find_packages(exclude=['tests', 'docs', 'build'])
+
+print('Package to import:')
+print(packages_to_import)
+print('=============')
+
 setuptools.setup(
     name="arcus-ml", # Replace with your own username
     version=arcus.ml.__version__,
@@ -29,7 +35,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/arcus-azure/arcus.ml",
-    packages=setuptools.find_packages(),
+    packages=setuptools.packages_to_import,
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
