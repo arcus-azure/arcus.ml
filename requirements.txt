@@ -1,5 +1,5 @@
+cv2
 numpy
 pandas
 tensorflow
 keras
-plaidml
