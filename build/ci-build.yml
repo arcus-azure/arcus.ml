@@ -7,11 +7,13 @@ trigger:
   paths:
     include:
     - arcus/*
+    - tests/*
 
 pr:
   paths:
     include:
     - arcus/*
+    - tests/*
     - build/ci-build.yml
 
 resources:
