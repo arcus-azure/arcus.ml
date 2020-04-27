@@ -3,4 +3,4 @@ numpy
 pandas
 tensorflow
 keras
-skimage
+scikit-image
