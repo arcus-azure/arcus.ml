@@ -1,4 +1,4 @@
-opencv
+opencv-python
 numpy
 pandas
 tensorflow
