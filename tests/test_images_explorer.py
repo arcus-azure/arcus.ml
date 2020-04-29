@@ -21,3 +21,8 @@ def test_visualize_first_images():
 
     exp.visualize({'lungs': lungs, 'masks': masks}, image_count = 6, randomize=False)
 
+def test_visualize_3d_shape_images():
+    lungs = imgio.load_images(image_path_1, convert_to_grey=True, keep_3d_shape=True)
+    masks = imgio.load_images(image_path_2, convert_to_grey=True, keep_3d_shape=True)
+
+    exp.visualize({'lungs': lungs, 'masks': masks}, image_count = 6, randomize=True)

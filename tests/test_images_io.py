@@ -29,6 +29,18 @@ def test_load_images_grey():
     assert image_list[0].shape == (40, 40)
     assert len(image_list) == 1
 
+def test_load_images_grey_keep_shape():
+    image_list = ami.load_images(image_path, image_size=40, max_images=1, convert_to_grey=True, keep_3d_shape=True)
+
+    assert image_list[0].shape == (40, 40, 1)
+    assert len(image_list) == 1
+
+def test_load_images_grey_dont_keep_shape():
+    image_list = ami.load_images(image_path, image_size=40, max_images=1, convert_to_grey=True, keep_3d_shape=False)
+
+    assert image_list[0].shape == (40, 40)
+    assert len(image_list) == 1
+
 def test_load_images_extensions():
     image_list = ami.load_images(image_path, valid_extensions=['.gif'])
 
