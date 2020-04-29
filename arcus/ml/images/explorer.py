@@ -38,7 +38,10 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
             if(len(_image_shape)==3):
                 if(_image_shape[2]==1): # Grey scale image in 3D shape
                     _current_image = _current_image.reshape(_image_shape[0], _image_shape[1])
-            _axes[_set_index, _image_index].imshow(_current_image)
+            if(len(image_sets) > 1):
+                _axes[_set_index, _image_index].imshow(_current_image)
+            else:
+                _axes[_image_index].imshow(_current_image)
             _image_index += 1
         _set_index += 1
     [axi.set_axis_off() for axi in _axes.ravel()]
