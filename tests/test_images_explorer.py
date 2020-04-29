@@ -26,3 +26,9 @@ def test_visualize_3d_shape_images():
     masks = imgio.load_images(image_path_2, convert_to_grey=True, keep_3d_shape=True)
 
     exp.visualize({'lungs': lungs, 'masks': masks}, image_count = 6, randomize=True)
+
+
+def test_visualize_oneset_images():
+    lungs = imgio.load_images(image_path_1)
+
+    exp.visualize({'lungs': lungs}, image_count = 6, randomize=True)
