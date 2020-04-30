@@ -10,11 +10,12 @@ from skimage import transform
 
 _logger = logging.getLogger()
 
-def to_blackwhite(image_list: np.array, black_threshold = 128) -> np.array:
+def to_blackwhite(image_list: np.array, threshold = 128) -> np.array:
     '''
     Transforms an image to a black & white image
     Args:
         image_list (np.array): A numpy array that contains all selected images represented as np.array
+        threshold (int): The threshold (between 0 and 255) that decides a pixel will be 0 or 255 (W/B)
     Returns: 
         np.array: A numpy array that contains all black & white images represented as np.array
     '''
@@ -28,7 +29,7 @@ def to_blackwhite(image_list: np.array, black_threshold = 128) -> np.array:
                 # Convert to grey scale
                 img = np.dot(img, [0.3, 0.59, 0.11])
         # make all pixels < threshold black
-        img = 1.0 * (img > black_threshold) 
+        img = 1.0 * (img > threshold) 
         images.append(img)
     
     return np.array(images)

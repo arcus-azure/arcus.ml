@@ -19,6 +19,7 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
         image_count (int): the amount of images to visualize from an image set
         randomize (bool): if True, images will be selected randomly from the imageset, if False, the first n images will be taken
         grid_size ((int, int)): the size of the grid to plot the images in.  By default auto size is being applied
+        
     Example:
         image_sets = {'predicted': y_pred, 'actuals': y_test}
         visualize(image_sets, 6, False)

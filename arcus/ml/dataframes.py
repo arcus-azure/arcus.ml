@@ -20,7 +20,7 @@ def shuffle(df: pd.DataFrame) -> pd.DataFrame:
 
     return df.sample(frac=1).reset_index(drop=True)
 
-def one_hot_encode(df: pd.DataFrame, column_name: str, drop_column:bool = True, prefix: str = None):
+def one_hot_encode(df: pd.DataFrame, column_name: str, drop_column:bool = True, prefix: str = None) -> pd.DataFrame:
     '''Take a categorical column and pivots the DataFrame to add columns (0 or 1 value) for every category
 
     Args:
@@ -45,10 +45,29 @@ def one_hot_encode(df: pd.DataFrame, column_name: str, drop_column:bool = True, 
 
     return df
 
-def keep_numeric_features(df: pd.DataFrame):
+def keep_numeric_features(df: pd.DataFrame) -> pd.DataFrame:
+    '''Takes the DataFrame and removes all non-numeric columns or features
+
+    Args:
+        df (pd.DataFrame): The DataFrame that should have its non-numerics removed
+
+    Returns: 
+        pd.DataFrame: The DataFrame with only the numeric features
+    '''
     return df.select_dtypes(include=np.number)
 
-def plot_features(df: pd.DataFrame, column_names = None, grid_shape = None, fig_size = None):
+def plot_features(df: pd.DataFrame, column_names: np.array = None, grid_shape = None, fig_size = None):
+    '''Plots the distribution of the relevant columns of a DataFrame
+
+    Args:
+        df (pd.DataFrame): The DataFrame that should have its non-numerics removed
+        column_names (np.array): The columns that should be plotted.  If None, all numeric columns will be taken
+        grid_shape (int, int): The shape of the plotting grid (rows, cols).  If None, the grid will have maximum 5 columns
+        fig_size (int, int): The size of the full plotting grid.  If None, auto size will be applied
+
+    Returns: 
+        figure, axes (tuple): The figure of the plot and the axes of the plot will be returned for further tuning where needed
+    '''
     # Take column names of all numeric columns
     if(column_names==None):
         # Default to all numeric columns
