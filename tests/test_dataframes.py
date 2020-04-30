@@ -65,3 +65,50 @@ def test_one_hot_encoding_prefix():
     assert len(encoded_df.columns) == 5
     assert 'cnt_BE' in encoded_df.columns
     assert len(encoded_df.loc[encoded_df['cnt_UK'] == 1]) == 1
+
+def test_plot_features_selectedcols():
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    _, _axes = adf.plot_features(df, column_names=['speed', 'temp_outside'])
+    assert len(_axes.ravel()) == 2
+    _ax = _axes[0]
+    assert _ax.numCols == 2
+    assert _ax.numRows == 1
+
+def test_plot_features_onerow():
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    _, _axes = adf.plot_features(df, column_names=['speed', 'temp_outside'])
+    assert len(_axes.ravel()) == 2
+    _ax = _axes[0]
+    assert _ax.numCols == 2
+    assert _ax.numRows == 1
+
+def test_plot_features_grid_size():
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    _, _axes = adf.plot_features(df, grid_shape=(2,3))
+    assert len(_axes.ravel()) == 6
+    _ax = _axes[0][0]
+    assert _ax.numCols == 3
+    assert _ax.numRows == 2
+
+def test_plot_features_default():
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    _, _axes = adf.plot_features(df)
+    assert len(_axes.ravel()) == 5
+    assert _axes[0].numCols == 5
+    assert _axes[0].numRows == 1
+
+def test_keep_numeric_features():
+    test_df = pd.DataFrame(categorical_data, columns = ['Country', 'Infected']) 
+    num_df = adf.keep_numeric_features(test_df)
+    assert len(num_df.columns) == 1
+
+def test_keep_numeric_features_onehotencoded():
+    test_df = pd.DataFrame(categorical_data, columns = ['Country', 'Infected'])
+    encoded_df = adf.one_hot_encode(test_df, 'Country', prefix='cnt') 
+    num_df = adf.keep_numeric_features(encoded_df)
+    assert len(num_df.columns) == 5
+
+def test_keep_numeric_features_csv():
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    num_df = adf.keep_numeric_features(df)
+    assert len(num_df.columns) == 5

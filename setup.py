@@ -18,7 +18,7 @@ class PyTest(TestCommand):
         errcode = pytest.main(self.test_args)
         sys.exit(errcode)
 
-packages_to_import = setuptools.find_packages(exclude=['tests', 'docs', 'build'])
+packages_to_import = setuptools.find_packages(exclude=['tests', 'docs', 'build', 'samples'])
 
 print('Package to import:')
 print(packages_to_import)
