@@ -5,4 +5,5 @@ tensorflow
 keras
 plaidml
 seaborn
+scikit-learn
 scikit-image
