@@ -1,5 +1,5 @@
 '''
-The images module provides standard helper functions to explore and visualize images
+The io module provides standard helper functions to load images from disk
 '''
 
 import logging
