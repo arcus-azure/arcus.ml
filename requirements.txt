@@ -1,6 +1,8 @@
+opencv-python
 numpy
 pandas
 tensorflow
 keras
 plaidml
 seaborn
+scikit-image
