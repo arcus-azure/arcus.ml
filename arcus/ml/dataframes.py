@@ -3,6 +3,9 @@ The dataframes module provides a lot of common operations for dataframe handling
 '''
 
 import pandas as pd
+import math
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 def shuffle(df: pd.DataFrame) -> pd.DataFrame:
     '''Shuffles the DataFrame and returns it
@@ -40,3 +43,23 @@ def one_hot_encode(df: pd.DataFrame, column_name: str, drop_column:bool = True, 
         df.drop([column_name], axis=1, inplace=True)
 
     return df
+
+def plot_features(df: pd.DataFrame, column_names: list()= None, grid_shape = None, fig_size = None):
+    # Take column names
+    if(column_names==None):
+        column_names = df.columns
+
+    # Define grid shape
+    if (grid_shape==None):
+        grid_width = 5 # We will use 5 plots side/side by default
+        grid_height = math.ceil(len(column_names) / grid_width)
+
+    # 
+    f, axes = plt.subplots(grid_width, grid_height, figsize=fig_size, sharex=False)
+    _it = 0
+    for col in column_names:
+        sns.distplot(df[col], color='skyblue',
+                     ax=axes[math.floor(_it / grid_width), _it % grid_height])
+        _it += 1
+    
+    return f, axes
