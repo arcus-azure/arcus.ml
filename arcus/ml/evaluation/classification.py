@@ -30,6 +30,9 @@ def evaluate_model(fitted_model, X_test: np.array, y_test: np.array, show_roc: b
     accuracy = metrics.accuracy_score(y_test, y_pred) * 100
     print('Accuracy score:', accuracy) 
     if(show_roc == True):
+        # Verify that we are having a binary classifier
+        if(len(fitted_model.classes_)!=2):
+            raise AttributeError('Showing a ROC curve is only possible for binary classifier, not for multi class')
         plot_roc_curve(y_test, y_pred) 
     
     return y_pred

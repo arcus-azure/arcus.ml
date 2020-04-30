@@ -4,6 +4,7 @@ import pytest
 import pandas as pd 
 import arcus.ml.dataframes as adf
 import logging
+from unittest.mock import patch 
 
 logging.basicConfig(level=logging.DEBUG)
 mylogger = logging.getLogger()
@@ -56,7 +57,8 @@ def test_one_hot_encoding_keepcolumn():
     assert len(encoded_df.loc[encoded_df['Country_UK'] == 1]) == 1
 
 
-def test_one_hot_encoding_prefix():
+@patch("matplotlib.pyplot.show")
+def test_one_hot_encoding_prefix(mock_show):
     # Create the pandas DataFrame 
     test_df = pd.DataFrame(categorical_data, columns = ['Country', 'Infected']) 
     encoded_df = adf.one_hot_encode(test_df, 'Country', prefix='cnt')
@@ -66,7 +68,8 @@ def test_one_hot_encoding_prefix():
     assert 'cnt_BE' in encoded_df.columns
     assert len(encoded_df.loc[encoded_df['cnt_UK'] == 1]) == 1
 
-def test_plot_features_selectedcols():
+@patch("matplotlib.pyplot.show")
+def test_plot_features_selectedcols(mock_show):
     df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
     _, _axes = adf.plot_features(df, column_names=['speed', 'temp_outside'])
     assert len(_axes.ravel()) == 2
@@ -74,7 +77,8 @@ def test_plot_features_selectedcols():
     assert _ax.numCols == 2
     assert _ax.numRows == 1
 
-def test_plot_features_onerow():
+@patch("matplotlib.pyplot.show")
+def test_plot_features_onerow(mock_show):
     df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
     _, _axes = adf.plot_features(df, column_names=['speed', 'temp_outside'])
     assert len(_axes.ravel()) == 2
@@ -82,7 +86,8 @@ def test_plot_features_onerow():
     assert _ax.numCols == 2
     assert _ax.numRows == 1
 
-def test_plot_features_grid_size():
+@patch("matplotlib.pyplot.show")
+def test_plot_features_grid_size(mock_show):
     df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
     _, _axes = adf.plot_features(df, grid_shape=(2,3))
     assert len(_axes.ravel()) == 6
@@ -90,7 +95,8 @@ def test_plot_features_grid_size():
     assert _ax.numCols == 3
     assert _ax.numRows == 2
 
-def test_plot_features_default():
+@patch("matplotlib.pyplot.show")
+def test_plot_features_default(mock_show):
     df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
     _, _axes = adf.plot_features(df)
     assert len(_axes.ravel()) == 5
