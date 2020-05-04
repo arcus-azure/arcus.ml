@@ -95,3 +95,18 @@ def plot_features(df: pd.DataFrame, column_names: np.array = None, grid_shape = 
         _it += 1
     
     return f, axes
+
+def to_timeseries(df: pd.DataFrame, time_column:str) -> pd.DataFrame:
+    '''
+    Transforms the dataframe to a timeseries enabled dataframe
+    by applying a DateTimeIndex to the given column
+
+    Args:
+        df (pd.DataFrame): The DataFrame that should be time-indexed
+    
+    Returns:
+        pd.DataFrame: The DataFrame, including the DatetimeIndex
+    '''
+    df.index = pd.DatetimeIndex(df[time_column])
+    pd.to_datetime(df[time_column], errors='coerce')
+    return df
