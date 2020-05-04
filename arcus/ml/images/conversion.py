@@ -74,9 +74,16 @@ def crop(image: np.array, x: int, y: int, width: int, height: int) -> np.array:
 
 def get_fragments(image: np.array, stride: tuple = (1,1), fragment_size: tuple = (1,1), rectangle = None):
     '''
-    
+    Scans an image and return the resulted parts as a list of image sections
+    Args:
+        image (np.array): The array representation of the image to scan
+        stride (tuple): The steps to move over the image
+        fragment_size (tuple): The size of the fragments to take from the image
+        rectangle (np.array): The rectangle in the image to scan (if only a part of the image should be scanned.  Form: (x, y, width, height)
+    Returns: 
+        np.array: A numpy array that contains all fragments as images
     '''
-    portion_list = list()
+    fragment_list = list()
     if(rectangle!=None):
         # First we will crop the rectangle to scan from the original image
         # Verify the rectangle is valid
@@ -94,9 +101,8 @@ def get_fragments(image: np.array, stride: tuple = (1,1), fragment_size: tuple =
         current_X = 0
         while current_X < image_width:
             if(current_Y + fragment_height) <= image_height and (current_X + fragment_width) <= image_width:
-                portion_list.append(crop(image, current_X, current_Y, fragment_width, fragment_height))
+                fragment_list.append(crop(image, current_X, current_Y, fragment_width, fragment_height))
             current_X += stride[0]
         current_Y += stride[1]
     
-    print(len(portion_list))
-    return np.array(portion_list)
+    return np.array(fragment_list)

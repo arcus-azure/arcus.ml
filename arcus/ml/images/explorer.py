@@ -12,6 +12,13 @@ import random
 _logger = logging.getLogger()
 
 def show_image(image: np.array, hide_grid: bool = True, grid_size = None):
+    '''
+    Visualizes an image
+    Args:
+        image (np.array): the image to visualize, represented as numpy array
+        hide_grid (bool): indicating if the grid (with the pixel positions) should be hidden
+        grid_size ((int, int)): the size of the grid to plot the images in.  By default auto size is being applied
+    '''
     plt.imshow(image, interpolation='nearest')
     if(hide_grid):
         plt.axis('off')

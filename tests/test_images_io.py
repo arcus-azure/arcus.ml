@@ -96,3 +96,9 @@ def test_image_url_through_cache():
     assert os.path.exists(cached_file_name)
     # Even tough url was different, the image should be the same
     assert image.shape == image2.shape
+
+def test_image_url_through_cache_missingfile():
+    # Trigger missing 
+    with pytest.raises(ValueError) as val_err:
+        ami.load_image_from_url(image_url, cache_location=cache_directory, file_name='')
+    assert 'file_name' in str(val_err.value)

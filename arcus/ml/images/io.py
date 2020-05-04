@@ -60,15 +60,15 @@ def load_image_from_url(image_url: str, image_size:int = -1,
                 convert_to_grey: bool = False, keep_3d_shape = False,
                 cache_location: str = None, file_name: str = None, force_download: bool = False) -> np.array:
     '''
-    Loads an image from file, applying preformatting
+    Loads an image from a given url, applying preformatting and supporting file caching
     Args:
-        image_url (str): The url of the image to load
+        image_url (str): The url to download the image.
         image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
-        cache_location (str): A path to a directory in which the downloaded image will be stored for further purposes.  If null, the image will be loaded in memory
-        file_name (str): The filename for the image to used in the cache_location 
-        force_download (bool): If True, the image will always be redownloaded, even if it exists in the cache_location
+        cache_location (str): When provided, the image will be cached to this folder location on disk
+        file_name (str): The file name of the image to be cached
+        force_download (bool): When true, the image will always be redownloaded and not retrieved from cache
     Returns: 
         np.array: A numpy array that represents the image
     '''
@@ -78,8 +78,10 @@ def load_image_from_url(image_url: str, image_size:int = -1,
         import requests
         if not os.path.exists(cache_location):
             os.makedirs(cache_location)
+        if not file_name:
+            raise ValueError('Since caching was asked, a file_name attribute should be passed too')
 
-        image_path = os.path.join(cache_location,file_name)
+        image_path = os.path.join(cache_location, file_name)
 
         if os.path.exists(image_path) and force_download == False:
             # We can return the cached image
