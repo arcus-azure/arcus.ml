@@ -9,7 +9,7 @@ import shutil
 image_path = 'tests/resources/images/lungs'
 image_url = 'https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png'
 image_url2 = 'https://github.com/arcus-azure/arcus/raw/master/media/arcus.png'
-cache_directory = 'temp/io'
+cache_directory = './temp/io'
 cache_file_name = 'testimage.png'
 
 def setup_module(module):
