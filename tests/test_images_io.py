@@ -4,8 +4,31 @@ import pytest
 import pandas as pd 
 import arcus.ml.images.io as ami
 import logging
+import shutil
 
 image_path = 'tests/resources/images/lungs'
+image_url = 'https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png'
+image_url2 = 'https://github.com/arcus-azure/arcus/raw/master/media/arcus.png'
+cache_directory = 'temp/io'
+cache_file_name = 'testimage.png'
+
+def setup_module(module):
+    ''' Setup for the entire module '''
+    # Do the actual setup stuff here
+    pass
+
+def setup_function(func):
+    ''' Setup for test functions '''
+    # Clean directory
+    if os.path.exists(cache_directory):
+        shutil.rmtree(cache_directory)
+    os.mkdir(cache_directory)
+
+def test_load_single_image():
+    image_file_name = 'tests/resources/images/lungs/CHNCXR_0001_0.png'
+    image = ami.load_image_from_disk(image_file_name, image_size=40)
+
+    assert(image.shape == (40, 40, 3))
 
 def test_load_images_defaults():
     image_list = ami.load_images(image_path)
@@ -45,3 +68,31 @@ def test_load_images_extensions():
     image_list = ami.load_images(image_path, valid_extensions=['.gif'])
 
     assert len(image_list) == 0
+
+def test_image_url_to_memory():
+    image = ami.load_image_from_url(image_url)
+    assert len(image.shape) == 3
+
+def test_image_url_to_cache():
+    cached_file_name = os.path.join(cache_directory, cache_file_name)
+    assert os.path.exists(cached_file_name)==False
+    image = ami.load_image_from_url(image_url, cache_location=cache_directory, file_name=cache_file_name, force_download=False)
+    assert len(image.shape) == 3
+    assert os.path.exists(cached_file_name)
+    disk_image = ami.load_image_from_disk(cached_file_name)
+    assert disk_image.shape == image.shape
+
+def test_image_url_through_cache():
+    cached_file_name = os.path.join(cache_directory, cache_file_name)
+    assert os.path.exists(cached_file_name)==False
+    # Force download of 1st image
+    image = ami.load_image_from_url(image_url, cache_location=cache_directory, file_name=cache_file_name, force_download=True)
+    assert len(image.shape) == 3
+    assert os.path.exists(cached_file_name)
+
+    # Cached download of 2nd image
+    image2 = ami.load_image_from_url(image_url2, cache_location=cache_directory, file_name=cache_file_name)
+    assert len(image.shape) == 3
+    assert os.path.exists(cached_file_name)
+    # Even tough url was different, the image should be the same
+    assert image.shape == image2.shape

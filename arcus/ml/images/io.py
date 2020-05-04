@@ -5,10 +5,27 @@ The io module provides standard helper functions to load images from disk
 import logging
 import os
 import numpy as np
-from cv2 import imread
+from cv2 import imread, imdecode, IMREAD_COLOR
+import urllib
 from skimage import transform
+from arcus.ml.images import conversion
 
 _logger = logging.getLogger()
+
+def load_image_from_disk(path: str, image_size:int = -1, 
+                convert_to_grey: bool = False, keep_3d_shape = False) -> np.array:
+    '''
+    Loads an image from file, applying preformatting
+    Args:
+        path (str): The filename of the image to load
+        image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
+        convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
+        keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
+    Returns: 
+        np.array: A numpy array that represents the image
+    '''
+    im = imread(path) 
+    return conversion.prepare(im, image_size, convert_to_grey, keep_3d_shape)
 
 def load_images(path: str, image_size:int = -1, max_images: int = -1, 
                 valid_extensions: np.array = ['.jpg','.jpeg','.gif','.png'],
@@ -30,19 +47,56 @@ def load_images(path: str, image_size:int = -1, max_images: int = -1,
         ext = os.path.splitext(f)[1]
         if ext.lower() not in valid_extensions:
             continue
-
-        im = imread(os.path.join(path,f)) 
-        if(image_size > 0):
-            im = transform.resize(im,(image_size, image_size),mode='constant',anti_aliasing=True)
-
-        if(convert_to_grey):
-            if(len(im.shape) == 3):
-                im = np.dot(im, [0.3, 0.59, 0.11])
-            if(len(im.shape)==2 and keep_3d_shape):
-                im = np.expand_dims(im, -1)
+        
+        im = load_image_from_disk(os.path.join(path,f), image_size, convert_to_grey, keep_3d_shape)
 
         images.append(im)
         if(len(images) >= max_images and max_images > 0):
             break
     
     return np.array(images)
+
+def load_image_from_url(image_url: str, image_size:int = -1, 
+                convert_to_grey: bool = False, keep_3d_shape = False,
+                cache_location: str = None, file_name: str = None, force_download: bool = False) -> np.array:
+    '''
+    Loads an image from file, applying preformatting
+    Args:
+        image_url (str): The url of the image to load
+        image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
+        convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
+        keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
+        cache_location (str): A path to a directory in which the downloaded image will be stored for further purposes.  If null, the image will be loaded in memory
+        file_name (str): The filename for the image to used in the cache_location 
+        force_download (bool): If True, the image will always be redownloaded, even if it exists in the cache_location
+    Returns: 
+        np.array: A numpy array that represents the image
+    '''
+    image = []
+    # If the users wants to cache, we first check if the image is 
+    if (cache_location != None):
+        import requests
+        if not os.path.exists(cache_location):
+            os.makedirs(cache_location)
+
+        image_path = os.path.join(cache_location,file_name)
+
+        if os.path.exists(image_path) and force_download == False:
+            # We can return the cached image
+            _logger.debug('We are taking the cached image from %s and will not download from %s', image_path, image_url)
+
+        else:
+            _logger.info('Downloading image from %s and saving to %s', image_url, image_path)
+            urllib.request.urlretrieve(image_url, image_path)
+        
+        # Returning image that has been persisted anyhow
+        return load_image_from_disk(image_path, image_size, convert_to_grey, keep_3d_shape)
+        
+    else:
+        _logger.info('Downloading image from %s and return in memory', image_url)
+        with urllib.request.urlopen(image_url) as url:
+            s = url.read()
+            print(type(s))
+            image = np.asarray(bytearray(s), dtype="uint8")
+            image = imdecode(image, IMREAD_COLOR)
+            return conversion.prepare(image, image_size, convert_to_grey, keep_3d_shape)
