@@ -19,10 +19,20 @@ def setup_module(module):
 
 def setup_function(func):
     ''' Setup for test functions '''
+    for filename in os.listdir(cache_directory):
+        file_path = os.path.join(cache_directory, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
     # cache_directory = os.path.join(os.getcwd(), 'tests/resources/temp/io')
-    if os.path.exists(cache_directory):
-        shutil.rmtree(cache_directory)
-    os.mkdir(cache_directory)
+    #if os.path.exists(cache_directory):
+    #    shutil.rmtree(cache_directory)
+    #os.mkdir(cache_directory)
+    #os.chdir(cache_directory)
 
 def test_load_single_image():
     image_file_name = 'tests/resources/images/lungs/CHNCXR_0001_0.png'
