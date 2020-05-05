@@ -80,7 +80,7 @@ steps:
     pythonUploadServiceConnection: 'Arcus ML PyPi feed'
 
 - script: |
-   pdoc --html --force --config show_source_code=False -o docs/ arcus.ml 
+   pdoc --html --force --config show_source_code=False -o docs/ arcus/ml 
   displayName: 'Generate code documentation'
   condition: succeededOrFailed()
 
