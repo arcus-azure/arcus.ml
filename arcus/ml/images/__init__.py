@@ -1,1 +1,1 @@
-__all__ = ['io', 'explorer', 'conversion', 'scanner']
+__all__ = ['io', 'explorer', 'conversion']

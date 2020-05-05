@@ -6,9 +6,10 @@ import logging
 import os
 import numpy as np
 from cv2 import imread, imdecode, IMREAD_COLOR
-import urllib
+import requests
 from skimage import transform
 from arcus.ml.images import conversion
+from io import BytesIO
 
 _logger = logging.getLogger()
 
@@ -56,13 +57,14 @@ def load_images(path: str, image_size:int = -1, max_images: int = -1,
     
     return np.array(images)
 
-def load_image_from_url(image_url: str, image_size:int = -1, 
+def load_image_from_url(image_url: str, http_headers: dict = None, image_size:int = -1, 
                 convert_to_grey: bool = False, keep_3d_shape = False,
                 cache_location: str = None, file_name: str = None, force_download: bool = False) -> np.array:
     '''
     Loads an image from a given url, applying preformatting and supporting file caching
     Args:
         image_url (str): The url to download the image.
+        http_headers (dict): The http headers to pass with the request as a dictionary
         image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
@@ -75,7 +77,6 @@ def load_image_from_url(image_url: str, image_size:int = -1,
     image = []
     # If the users wants to cache, we first check if the image is 
     if (cache_location != None):
-        import requests
         if not os.path.exists(cache_location):
             os.makedirs(cache_location)
         if not file_name:
@@ -89,16 +90,22 @@ def load_image_from_url(image_url: str, image_size:int = -1,
 
         else:
             _logger.info('Downloading image from %s and saving to %s', image_url, image_path)
-            urllib.request.urlretrieve(image_url, image_path)
-        
+            with requests.get(image_url, headers = http_headers, stream=True) as _http_response:
+                if(str(_http_response.status_code).startswith('2')):
+                    with open(image_path, 'wb') as fd:
+                        for chunk in _http_response.iter_content(chunk_size=128):
+                            fd.write(chunk)
+                else:
+                    raise Exception('HTTP error: ' + str(_http_response.status_code))
         # Returning image that has been persisted anyhow
         return load_image_from_disk(image_path, image_size, convert_to_grey, keep_3d_shape)
         
     else:
         _logger.info('Downloading image from %s and return in memory', image_url)
-        with urllib.request.urlopen(image_url) as url:
-            s = url.read()
-            print(type(s))
-            image = np.asarray(bytearray(s), dtype="uint8")
-            image = imdecode(image, IMREAD_COLOR)
-            return conversion.prepare(image, image_size, convert_to_grey, keep_3d_shape)
+        with requests.get(image_url, headers = http_headers) as _http_response:
+            if(str(_http_response.status_code).startswith('2')):
+                image = np.asarray(bytearray(_http_response.content), dtype="uint8")
+                image = imdecode(image, IMREAD_COLOR)
+                return conversion.prepare(image, image_size, convert_to_grey, keep_3d_shape)
+            else:
+                raise Exception('HTTP error: ' + str(_http_response.status_code))

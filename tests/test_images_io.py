@@ -102,3 +102,15 @@ def test_image_url_through_cache_missingfile():
     with pytest.raises(ValueError) as val_err:
         ami.load_image_from_url(image_url, cache_location=cache_directory, file_name='')
     assert 'file_name' in str(val_err.value)
+
+def test_image_url_unauthorized():
+    # Trigger missing 
+    with pytest.raises(Exception) as val_err:
+        ami.load_image_from_url('https://stockcharts.com/c-sc/sc?s=AAPL&p=W&yr=3&mn=0&dy=0&i=t5753201539c&r=1588670112897')
+    assert '403' in str(val_err.value)
+
+def test_image_url_headers():
+    # Trigger missing 
+    img = ami.load_image_from_url('https://stockcharts.com/c-sc/sc?s=AAPL&p=W&yr=3&mn=0&dy=0&i=t5753201539c&r=1588670112897',
+        http_headers={'User-Agent': 'Postman'})
+    assert len(img.shape) == 3
