@@ -87,6 +87,7 @@ steps:
 - script: |
    python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*.whl
   displayName: 'Publish to PyPi dev'
+  condition: succeededOrFailed()
 
 - task: CopyFiles@2  
   inputs:    
