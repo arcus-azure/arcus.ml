@@ -80,13 +80,14 @@ steps:
     pythonUploadServiceConnection: 'Arcus ML PyPi feed'
 
 - script: |
-   pdoc --html --config show_source_code=False -o docs/ arcus
+   pdoc --html --force --config show_source_code=False -o docs/ arcus/ml 
   displayName: 'Generate code documentation'
-  condition: succeededOrFailed()
+  continueOnError: true
 
 - script: |
    python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*.whl
   displayName: 'Publish to PyPi dev'
+  condition: succeededOrFailed()
 
 - task: CopyFiles@2  
   inputs:    

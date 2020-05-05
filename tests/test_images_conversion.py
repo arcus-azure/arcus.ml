@@ -23,3 +23,8 @@ def test_black_white_conversion_double_arrays():
     ls = conv.to_blackwhite(np.array(test_list))
     pixel_value = ls[0][0][0]
     assert pixel_value == 0 or pixel_value == 1
+
+def test_crop_image():
+    image = ami.load_images(image_path, max_images=1, image_size=50)[0]
+    crop = conv.crop(image, 10, 20, 20, 10)
+    assert crop.shape == (10, 20, 3)

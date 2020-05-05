@@ -11,7 +11,20 @@ import random
 
 _logger = logging.getLogger()
 
-def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, grid_size = None):
+def show_image(image: np.array, hide_grid: bool = True, grid_size = None):
+    '''
+    Visualizes an image
+    Args:
+        image (np.array): the image to visualize, represented as numpy array
+        hide_grid (bool): indicating if the grid (with the pixel positions) should be hidden
+        grid_size ((int, int)): the size of the grid to plot the images in.  By default auto size is being applied
+    '''
+    plt.imshow(image, interpolation='nearest')
+    if(hide_grid):
+        plt.axis('off')
+    plt.show()
+
+def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, grid_size = None, hide_grid: bool = True):
     '''
     Visualizes the images in the image_sets in a grid
     Args:
@@ -26,7 +39,12 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
     '''
     _f, _axes = plt.subplots(len(image_sets), image_count, figsize=grid_size, sharex=False)
     _nr_of_images = len(image_sets[list(image_sets.keys())[0]])
-    _image_indices = random.sample(range(0, _nr_of_images - 1), image_count) if randomize else range(0, image_count)
+    if(image_count > _nr_of_images):
+        image_count = _nr_of_images
+    if(image_count == 1):
+        _image_indices = [0]
+    else:
+        _image_indices = random.sample(range(0, _nr_of_images - 1), image_count) if randomize else range(0, image_count)
                     
 
     _set_index = 0
@@ -48,5 +66,6 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
                 _axes[_image_index].imshow(_current_image, cmap = _cmap)
             _image_index += 1
         _set_index += 1
-    [axi.set_axis_off() for axi in _axes.ravel()]
+    if(hide_grid):
+        [axi.set_axis_off() for axi in _axes.ravel()]
     
