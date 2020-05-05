@@ -82,7 +82,7 @@ steps:
 - script: |
    pdoc --html --force --config show_source_code=False -o docs/ arcus/ml 
   displayName: 'Generate code documentation'
-  condition: succeededOrFailed()
+  continueOnError: true
 
 - script: |
    python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*.whl
