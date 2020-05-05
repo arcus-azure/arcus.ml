@@ -9,7 +9,7 @@ import shutil
 image_path = 'tests/resources/images/lungs'
 image_url = 'https://cdn.sstatic.net/Sites/stackoverflow/img/apple-touch-icon@2.png'
 image_url2 = 'https://github.com/arcus-azure/arcus/raw/master/media/arcus.png'
-cache_directory = ''
+cache_directory = 'tests/resources/temp/io'
 cache_file_name = 'testimage.png'
 
 def setup_module(module):
@@ -19,11 +19,10 @@ def setup_module(module):
 
 def setup_function(func):
     ''' Setup for test functions '''
-    cache_directory = os.path.join(os.getcwd(), 'temp/io')
+    # cache_directory = os.path.join(os.getcwd(), 'tests/resources/temp/io')
     if os.path.exists(cache_directory):
         shutil.rmtree(cache_directory)
     os.mkdir(cache_directory)
-    os.chdir(cache_directory)
 
 def test_load_single_image():
     image_file_name = 'tests/resources/images/lungs/CHNCXR_0001_0.png'
