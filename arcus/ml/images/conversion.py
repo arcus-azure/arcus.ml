@@ -28,9 +28,8 @@ def to_blackwhite(image_list: np.array, threshold = 128, keep_3d_shape = False) 
             if(img.shape[2] == 3):
                 # Convert to grey scale
                 img = np.dot(img, [0.3, 0.59, 0.11])
-        else:
-            if keep_3d_shape:
-                img = np.expand_dims(img, -1)
+        if (len(img.shape) == 2 and keep_3d_shape):
+            img = np.expand_dims(img, -1)
         # make all pixels < threshold black
         img = 1.0 * (img > threshold) 
         images.append(img)
