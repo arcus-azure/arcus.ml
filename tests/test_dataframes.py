@@ -5,6 +5,7 @@ import pandas as pd
 import arcus.ml.dataframes as adf
 import logging
 from unittest.mock import patch 
+from collections import Counter
 
 logging.basicConfig(level=logging.DEBUG)
 mylogger = logging.getLogger()
@@ -118,3 +119,32 @@ def test_keep_numeric_features_csv():
     df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
     num_df = adf.keep_numeric_features(df)
     assert len(num_df.columns) == 5
+
+def test_class_distribution_default():
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    cnt1 = Counter(df.gas_type)
+    df = adf.distribute_class(df, 'gas_type')
+    cnt2 = Counter(df.gas_type)
+    # Smallest class size from first should be same as largest from new
+    assert min(cnt1.values()) == max (cnt2.values())
+    # Sizes of new df should be the same
+    assert min(cnt2.values()) == max (cnt2.values())
+    assert len(df) == min(cnt1.values()) * 2
+
+def test_class_distribution_class_size():
+    cs = 30
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    cnt1 = Counter(df.gas_type)
+    df = adf.distribute_class(df, 'gas_type', cs)
+    cnt2 = Counter(df.gas_type)
+    # Sizes of new df should be the same
+    assert min(cnt2.values()) == max (cnt2.values())
+    assert len(df) == cs * 2
+
+def test_class_distribution_noshuffle():
+    cs = 30
+    df = pd.read_csv('tests/resources/datasets/car-fuel.csv')
+    cnt1 = Counter(df.gas_type)
+    df = adf.distribute_class(df, 'gas_type', cs, False)
+    cnt2 = Counter(df.iloc[0:cs].gas_type)
+    assert len(cnt2.keys()) == 1

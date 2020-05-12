@@ -7,6 +7,8 @@ import math
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from collections import Counter
+from arcus.ml.timeseries import timeops
 
 def shuffle(df: pd.DataFrame) -> pd.DataFrame:
     '''Shuffles the DataFrame and returns it
@@ -98,15 +100,39 @@ def plot_features(df: pd.DataFrame, column_names: np.array = None, grid_shape = 
 
 def to_timeseries(df: pd.DataFrame, time_column:str) -> pd.DataFrame:
     '''
-    Transforms the dataframe to a timeseries enabled dataframe
-    by applying a DateTimeIndex to the given column
+    This is deprecated and it is advised to use the timeseries.set_timeseries function for this
+    '''
+    return timeops.set_timeseries(df, time_column)
+
+def distribute_class(df: pd.DataFrame, class_column: str, class_size:int = None, shuffle_result: bool = True):
+    '''
+    Makes sure a DataFrame is returned with an equal class distribution
+    For every class a number of samples will be taken
+    The class size is defined by the minimum of the passed class_size parameter and the smallest class in the Dataframe
 
     Args:
-        df (pd.DataFrame): The DataFrame that should be time-indexed
+        df (pd.DataFrame): the DataFrame that contains all records
+        class_column (str): the name of the column that contains the class feature
+        class_size (int): the size of the class.  defaults to the minimum available class size
+        shuffle_result (bool): indicates the DataFrame should be shuffled before returning.  Default to True
     
     Returns:
-        pd.DataFrame: The DataFrame, including the DatetimeIndex
+        pd.DataFrame: the DataFrame that contains the records with the equal class distribution
     '''
-    df.index = pd.DatetimeIndex(df[time_column])
-    pd.to_datetime(df[time_column], errors='coerce')
-    return df
+    _class_distribution = Counter(df[class_column])
+    if(class_size is None):
+        class_size = min(_class_distribution.values())
+    else:
+        class_size = min(min(_class_distribution.values()), class_size)
+
+    _result_df = None
+    for _class in _class_distribution.keys():
+        _df_add = df[df[class_column] == _class].sample(class_size)
+        if(_result_df is None):
+            _result_df = _df_add.copy()
+        else:
+            _result_df = _result_df.append(_df_add)
+
+    if(shuffle_result):
+        _result_df = shuffle(_result_df)
+    return _result_df
