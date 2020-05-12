@@ -35,6 +35,15 @@ def add_time_reference(sorted_df: pd.DataFrame, n: int, reference_column: str, n
     sorted_df[new_column] = sorted_df[reference_column].shift(n)
 
 def time_slice(df: pd.DataFrame, time_column:str, start: datetime.datetime = None, end: datetime.datetime = None):
+    '''
+    This method takes a time series DataFrame and only returns the time slice, based on the start & end date
+    Args:
+        df (pd.DataFrame): The indexed Data Frame , which should be a DatetimeIndex
+        start (datetime): The start time of the time slice.  When skipped, the time slice begins at the beginning of the index
+        end (datetime): The end time of the time slice.  When skipped, the time slice end at the end of the index
+    Returns:
+        (pd.DataFrame): the dataframe only containing the records inside the time slice
+    '''
     if(df.index is not None and type(df.index) == pd.DatetimeIndex):
         return df.loc[start:end]
     return df

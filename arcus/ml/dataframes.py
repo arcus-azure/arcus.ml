@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from collections import Counter
+from arcus.ml.timeseries import timeops
 
 def shuffle(df: pd.DataFrame) -> pd.DataFrame:
     '''Shuffles the DataFrame and returns it
@@ -99,20 +100,25 @@ def plot_features(df: pd.DataFrame, column_names: np.array = None, grid_shape = 
 
 def to_timeseries(df: pd.DataFrame, time_column:str) -> pd.DataFrame:
     '''
-    Transforms the dataframe to a timeseries enabled dataframe
-    by applying a DateTimeIndex to the given column
-
-    Args:
-        df (pd.DataFrame): The DataFrame that should be time-indexed
-    
-    Returns:
-        pd.DataFrame: The DataFrame, including the DatetimeIndex
+    This is deprecated and it is advised to use the timeseries.set_timeseries function for this
     '''
-    df.index = pd.DatetimeIndex(df[time_column])
-    pd.to_datetime(df[time_column], errors='coerce')
-    return df
+    return timeops.set_timeseries(df, time_column)
 
 def distribute_class(df: pd.DataFrame, class_column: str, class_size:int = None, shuffle_result: bool = True):
+    '''
+    Makes sure a DataFrame is returned with an equal class distribution
+    For every class a number of samples will be taken
+    The class size is defined by the minimum of the passed class_size parameter and the smallest class in the Dataframe
+
+    Args:
+        df (pd.DataFrame): the DataFrame that contains all records
+        class_column (str): the name of the column that contains the class feature
+        class_size (int): the size of the class.  defaults to the minimum available class size
+        shuffle_result (bool): indicates the DataFrame should be shuffled before returning.  Default to True
+    
+    Returns:
+        pd.DataFrame: the DataFrame that contains the records with the equal class distribution
+    '''
     _class_distribution = Counter(df[class_column])
     if(class_size is None):
         class_size = min(_class_distribution.values())

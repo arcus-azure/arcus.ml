@@ -80,7 +80,7 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
     
 def visualize_classes(image_set: np.array, classes: np.array, image_count: int = 10, randomize: bool = True, grid_size = None):
     '''
-    Visualizes the images from the image_set in a grid and adds the class of the image to it
+    Visualizes the images from the image_set in a grid and print the corresponding class on the charts
     Args:
         image_set (np.array): an array of images to pick from
         classes (np.array): the corresponding labels of the classes for the images

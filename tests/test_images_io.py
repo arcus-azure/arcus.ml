@@ -142,3 +142,4 @@ def test_load_images_set_df():
     X, y = ami.load_images_from_dataframe(df, 'lungfile', 'maskfile', target_as_image=True)
     assert len(X) == 11
     assert len(y[0].shape) == 3
+

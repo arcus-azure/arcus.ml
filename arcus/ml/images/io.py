@@ -9,6 +9,7 @@ from cv2 import imread, imdecode, IMREAD_COLOR
 import requests
 from skimage import transform
 from arcus.ml.images import conversion
+from arcus.ml import dataframes as adf
 from io import BytesIO
 import pandas as pd
 
@@ -129,6 +130,7 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
     '''
     images = []
     targets = []
+    df = adf.shuffle(df)
     for idx, row in df.iterrows() :
         file = row[image_column_name]
         if file and os.path.exists(file):
@@ -141,13 +143,13 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
                     images.append(im)
                     targets.append(target_im)
                 else:
-                    _logger.warning('File ' + target_file + 'not found')
+                    _logger.warning('File ' + target_file + ' not found')
             else:
                 im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
                 images.append(im)
                 targets.append(row[target_column_name])
         else:
-            _logger.warning('File ' + file + 'not found')
+            _logger.warning('File ' + file + ' not found')
 
         if(len(images) >= max_images and max_images > 0):
             break

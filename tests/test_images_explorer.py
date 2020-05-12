@@ -4,6 +4,7 @@ import pytest
 import pandas as pd 
 import arcus.ml.images.explorer as exp
 import arcus.ml.images.io as imgio
+import arcus.ml.images.conversion as conv
 import logging
 
 image_path_1 = 'tests/resources/images/lungs'
@@ -32,3 +33,9 @@ def test_visualize_oneset_images():
     lungs = imgio.load_images(image_path_1)
 
     exp.visualize({'lungs': lungs}, image_count = 6, randomize=True)
+
+def test_show_3d_shape_image():
+    lungs = imgio.load_images(image_path_1, convert_to_grey=True, keep_3d_shape=True)
+#X = conversion.to_blackwhite(X, keep_3d_shape=True, threshold=200)
+    exp.show_image(lungs[1])
+
