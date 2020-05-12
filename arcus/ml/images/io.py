@@ -14,13 +14,13 @@ import pandas as pd
 
 _logger = logging.getLogger()
 
-def load_image_from_disk(path: str, image_size:int = -1, 
+def load_image_from_disk(path: str, image_size = None, 
                 convert_to_grey: bool = False, keep_3d_shape = False) -> np.array:
     '''
     Loads an image from file, applying preformatting
     Args:
         path (str): The filename of the image to load
-        image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
+        image_size (tuple): The image size can be passed as tuple (W, H) or as int (W=H)
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
     Returns: 
@@ -29,14 +29,14 @@ def load_image_from_disk(path: str, image_size:int = -1,
     im = imread(path) 
     return conversion.prepare(im, image_size, convert_to_grey, keep_3d_shape)
 
-def load_images(path: str, image_size:int = -1, max_images: int = -1, 
+def load_images(path: str, image_size = None, max_images: int = -1, 
                 valid_extensions: np.array = ['.jpg','.jpeg','.gif','.png'],
                 convert_to_grey: bool = False, keep_3d_shape = False) -> np.array:
     '''
     Loads the images from a specific folder
     Args:
         path (str): The path or folder name to load images from.  This can be a relative or fully qualified path
-        image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
+        image_size (tuple): The image size can be passed as tuple (W, H) or as int (W=H)
         max_images (int): The maximum amount of images to load from the folder.  If 0 or smaller, all images will be returned
         valid_extensions (np.array): The file extensions that should be filtered.  Defaults to jpg, jpeg, gif and png
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
@@ -58,7 +58,7 @@ def load_images(path: str, image_size:int = -1, max_images: int = -1,
     
     return np.array(images)
 
-def load_image_from_url(image_url: str, http_headers: dict = None, image_size:int = -1, 
+def load_image_from_url(image_url: str, http_headers: dict = None, image_size = None, 
                 convert_to_grey: bool = False, keep_3d_shape = False,
                 cache_location: str = None, file_name: str = None, force_download: bool = False) -> np.array:
     '''
@@ -66,7 +66,7 @@ def load_image_from_url(image_url: str, http_headers: dict = None, image_size:in
     Args:
         image_url (str): The url to download the image.
         http_headers (dict): The http headers to pass with the request as a dictionary
-        image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
+        image_size (tuple): The image size can be passed as tuple (W, H) or as int (W=H)
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
         cache_location (str): When provided, the image will be cached to this folder location on disk
@@ -112,14 +112,15 @@ def load_image_from_url(image_url: str, http_headers: dict = None, image_size:in
                 raise Exception('HTTP error: ' + str(_http_response.status_code))
 
 def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_column_name: str, 
-                                image_size:int = -1, max_images: int = -1, 
+                                image_size = None, max_images: int = -1, target_as_image: bool = False,
                                 convert_to_grey: bool = False, keep_3d_shape = False) -> (np.array, np.array):
     '''
     Loads the images from a specific folder
     Args:
         path (str): The path or folder name to load images from.  This can be a relative or fully qualified path
-        image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
+        image_size (tuple): The image size can be passed as tuple (W, H) or as int (W=H)
         max_images (int): The maximum amount of images to load from the folder.  If 0 or smaller, all images will be returned
+        target_as_image (bool): Defines if the target column contains file names that should be loaded as image
         valid_extensions (np.array): The file extensions that should be filtered.  Defaults to jpg, jpeg, gif and png
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
@@ -131,10 +132,20 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
     for idx, row in df.iterrows() :
         file = row[image_column_name]
         if file and os.path.exists(file):
-
-            im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
-            images.append(im)
-            targets.append(row[target_column_name])
+            if target_as_image:
+                # Check if the target file exists
+                target_file = row[target_column_name]
+                if target_file and os.path.exists(target_file):
+                    im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
+                    target_im = load_image_from_disk(target_file, image_size, convert_to_grey, keep_3d_shape)
+                    images.append(im)
+                    targets.append(target_im)
+                else:
+                    _logger.warning('File ' + target_file + 'not found')
+            else:
+                im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
+                images.append(im)
+                targets.append(row[target_column_name])
         else:
             _logger.warning('File ' + file + 'not found')
 

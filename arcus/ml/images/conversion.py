@@ -10,7 +10,7 @@ from skimage import transform
 
 _logger = logging.getLogger()
 
-def to_blackwhite(image_list: np.array, threshold = 128) -> np.array:
+def to_blackwhite(image_list: np.array, threshold = 128, keep_3d_shape = False) -> np.array:
     '''
     Transforms an image to a black & white image
     Args:
@@ -28,27 +28,32 @@ def to_blackwhite(image_list: np.array, threshold = 128) -> np.array:
             if(img.shape[2] == 3):
                 # Convert to grey scale
                 img = np.dot(img, [0.3, 0.59, 0.11])
+        if keep_3d_shape:
+            img = np.expand_dims(img, -1)
         # make all pixels < threshold black
         img = 1.0 * (img > threshold) 
         images.append(img)
     
     return np.array(images)
 
-def prepare(image: np.array, image_size:int = -1, 
+def prepare(image: np.array, image_size = None, 
             convert_to_grey: bool = False, keep_3d_shape = False) -> np.array:
     '''
     Takes an image and applies preformatting
     Args:
         image (np.array): The array representation of the image to process
-        image_size (int): If the image_size is larger than 0, the images will be resized to a square of this size
+        image_size (tuple): The image size can be passed as tuple (W, H) or as int (W=H)
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
     Returns: 
         np.array: A numpy array that represents the preprocessed image
     '''
     
-    if(image_size > 0):
-        image = transform.resize(image,(image_size, image_size),mode='constant',anti_aliasing=True)
+    if(image_size is not None):
+        if type(image_size) == tuple:
+            image = transform.resize(image,image_size,mode='constant',anti_aliasing=True)
+        else:
+            image = transform.resize(image,(image_size, image_size),mode='constant',anti_aliasing=True)
 
     if(convert_to_grey):
         if(len(image.shape) == 3):

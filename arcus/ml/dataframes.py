@@ -7,6 +7,7 @@ import math
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+from collections import Counter
 
 def shuffle(df: pd.DataFrame) -> pd.DataFrame:
     '''Shuffles the DataFrame and returns it
@@ -110,3 +111,22 @@ def to_timeseries(df: pd.DataFrame, time_column:str) -> pd.DataFrame:
     df.index = pd.DatetimeIndex(df[time_column])
     pd.to_datetime(df[time_column], errors='coerce')
     return df
+
+def distribute_class(df: pd.DataFrame, class_column: str, class_size:int = None, shuffle_result: bool = True):
+    _class_distribution = Counter(df[class_column])
+    if(class_size is None):
+        class_size = min(_class_distribution.values())
+    else:
+        class_size = min(min(_class_distribution.values()), class_size)
+
+    _result_df = None
+    for _class in _class_distribution.keys():
+        _df_add = df[df[class_column] == _class].sample(class_size)
+        if(_result_df is None):
+            _result_df = _df_add.copy()
+        else:
+            _result_df = _result_df.append(_df_add)
+
+    if(shuffle_result):
+        _result_df = shuffle(_result_df)
+    return _result_df

@@ -50,11 +50,17 @@ def test_load_images_max_number():
 
     assert len(image_list) == 4
 
-def test_load_images_resize():
+def test_load_images_resize_square():
     image_list = ami.load_images(image_path, image_size=40, max_images=1)
 
     assert len(image_list) == 1
     assert image_list[0].shape == (40, 40, 3)
+
+def test_load_images_resize_tuple():
+    image_list = ami.load_images(image_path, image_size=(40, 30), max_images=1)
+
+    assert len(image_list) == 1
+    assert image_list[0].shape == (40, 30, 3)
 
 def test_load_images_grey():
     image_list = ami.load_images(image_path, image_size=40, max_images=1, convert_to_grey=True)
@@ -124,3 +130,15 @@ def test_image_url_headers():
     img = ami.load_image_from_url('https://stockcharts.com/c-sc/sc?s=AAPL&p=W&yr=3&mn=0&dy=0&i=t5753201539c&r=1588670112897',
         http_headers={'User-Agent': 'Postman'})
     assert len(img.shape) == 3
+
+def test_load_images_df():
+    df = pd.read_csv('tests/resources/datasets/lung-files.csv')
+    X, y = ami.load_images_from_dataframe(df, 'lungfile', 'result')
+    assert len(X) == 11
+    assert y[3] in (0, 1)
+
+def test_load_images_set_df():
+    df = pd.read_csv('tests/resources/datasets/lung-files.csv')
+    X, y = ami.load_images_from_dataframe(df, 'lungfile', 'maskfile', target_as_image=True)
+    assert len(X) == 11
+    assert len(y[0].shape) == 3
