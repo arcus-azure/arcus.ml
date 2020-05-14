@@ -138,3 +138,4 @@ src/build/
 *.egg-info
 .pytest_cache/
 .vscode/
+samples/temp/*
