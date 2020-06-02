@@ -69,7 +69,7 @@ steps:
     reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
 - script: |    
-    python setup.py bdist_wheel 
+    python setup.py sdist bdist_wheel 
   displayName: 'Build wheels'
 
 - script: python -m pip install --upgrade twine
@@ -85,7 +85,7 @@ steps:
   continueOnError: true
 
 - script: |
-   python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*.whl
+   python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
   displayName: 'Publish to PyPi dev'
   condition: succeededOrFailed()
 
