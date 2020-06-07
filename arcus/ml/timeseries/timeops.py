@@ -48,3 +48,8 @@ def time_slice(df: pd.DataFrame, time_column:str, start: datetime.datetime = Non
         df = set_timeseries(df, time_column)
     df = df.sort_index()
     return df.loc[start:end]
+
+def combine_time_ranges(*args: pd.DataFrame):
+    _result_df = pd.concat(args)
+    _result_df = _result_df.drop_duplicates()
+    return _result_df
