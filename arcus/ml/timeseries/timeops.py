@@ -44,6 +44,7 @@ def time_slice(df: pd.DataFrame, time_column:str, start: datetime.datetime = Non
     Returns:
         (pd.DataFrame): the dataframe only containing the records inside the time slice
     '''
-    if(df.index is not None and type(df.index) == pd.DatetimeIndex):
-        return df.loc[start:end]
-    return df
+    if(df.index is None or type(df.index) != pd.DatetimeIndex):
+        df = set_timeseries(df, time_column)
+    df = df.sort_index()
+    return df.loc[start:end]
