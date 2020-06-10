@@ -44,9 +44,10 @@ def time_slice(df: pd.DataFrame, time_column:str, start: datetime.datetime = Non
     Returns:
         (pd.DataFrame): the dataframe only containing the records inside the time slice
     '''
-    if(df.index is not None and type(df.index) == pd.DatetimeIndex):
-        return df.loc[start:end]
-    return df
+    if(df.index is None or type(df.index) != pd.DatetimeIndex):
+        df = set_timeseries(df, time_column)
+    df = df.sort_index()
+    return df.loc[start:end]
 
 def get_windows(sorted_df: pd.DataFrame, window_size: int, window_stride: int = 1, group_column: str = None, zero_padding: bool = False, remove_group_column: bool = False, target_column: str = None) -> np.array:
     if group_column is None:
@@ -114,3 +115,8 @@ def __pop_from_array(my_array,pc):
     pop = my_array[:,i]
     new_array = np.hstack((my_array[:,:i],my_array[:,i+1:]))
     return new_array, pop
+
+def combine_time_ranges(*args: pd.DataFrame):
+    _result_df = pd.concat(args)
+    _result_df = _result_df.drop_duplicates()
+    return _result_df

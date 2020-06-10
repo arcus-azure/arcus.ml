@@ -3,6 +3,7 @@ import arcus.ml
 import sys
 
 from setuptools.command.test import test as TestCommand
+from setuptools import find_namespace_packages
 
 with open("package-description.md", "r") as fh:
     long_description = fh.read()
@@ -25,7 +26,7 @@ print(packages_to_import)
 print('=============')
 
 setuptools.setup(
-    name="arcus-ml", # Replace with your own username
+    name="arcus-ml", 
     version=arcus.ml.__version__,
     author="Arcus",
     author_email="arcus-automation@codit.eu",
@@ -35,7 +36,9 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/arcus-azure/arcus.ml",
-    packages=packages_to_import,
+    packages=find_namespace_packages(include=['arcus.*'], exclude=['tests', 'docs', 'build', 'samples']),
+    package_dir={'arcus.ml': 'arcus/ml'},
+    namespace_packages=['arcus'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
