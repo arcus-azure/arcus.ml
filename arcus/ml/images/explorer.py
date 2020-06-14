@@ -11,7 +11,7 @@ import random
 
 _logger = logging.getLogger()
 
-def show_image(image: np.array, hide_grid: bool = True, grid_size = None):
+def show_image(image: np.array, hide_grid: bool = True, grid_size = None, silent_mode: bool = False):
     '''
     Visualizes an image
     Args:
@@ -30,9 +30,13 @@ def show_image(image: np.array, hide_grid: bool = True, grid_size = None):
     plt.imshow(image, interpolation='nearest', cmap = _cmap)
     if(hide_grid):
         plt.axis('off')
-    plt.show()
+    
+    if silent_mode:
+        return plt
+    else:
+        plt.show()
 
-def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, grid_size = None, hide_grid: bool = True):
+def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, grid_size = None, hide_grid: bool = True, silent_mode: bool = False):
     '''
     Visualizes the images in the image_sets in a grid
     Args:
@@ -77,8 +81,12 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
         _set_index += 1
     if(hide_grid):
         [axi.set_axis_off() for axi in _axes.ravel()]
-    
-def visualize_classes(image_set: np.array, classes: np.array, image_count: int = 10, randomize: bool = True, grid_size = None):
+    if silent_mode:
+        return plt
+    else:
+        plt.show()
+
+def visualize_classes(image_set: np.array, classes: np.array, image_count: int = 10, randomize: bool = True, grid_size = None, silent_mode: bool = False):
     '''
     Visualizes the images from the image_set in a grid and print the corresponding class on the charts
     Args:
@@ -117,4 +125,7 @@ def visualize_classes(image_set: np.array, classes: np.array, image_count: int =
         _ax.set_title(classes[idx])
         _image_index += 1
     [axi.set_axis_off() for axi in _axes.ravel()]
-    
+    if silent_mode:
+        return plt
+    else:
+        plt.show()
