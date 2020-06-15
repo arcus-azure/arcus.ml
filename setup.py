@@ -39,7 +39,7 @@ setuptools.setup(
     packages=find_namespace_packages(include=['arcus.*'], exclude=['tests', 'docs', 'build', 'samples']),
     package_dir={'arcus.ml': 'arcus/ml'},
     namespace_packages=['arcus'],
-    install_requires=['pandas', 'numpy', 'seaborn', 'opencv-python'],
+    install_requires=['pandas', 'numpy', 'seaborn', 'opencv-python','scikit-image','scikit-learn'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
