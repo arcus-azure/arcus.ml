@@ -147,11 +147,18 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
             else:
                 im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
                 images.append(im)
-                targets.append(row[target_column_name])
+                if(isinstance(target_column_name, list)):
+                    _current_targets = list()
+                    for target_column in target_column_name:
+                        print(type(row[target_column]))
+                        _current_targets.append(row[target_column])
+                    targets.append(_current_targets)
+                else:
+                    targets.append(row[target_column_name])
         else:
             _logger.warning('File ' + file + ' not found')
 
         if(len(images) >= max_images and max_images > 0):
             break
     
-    return np.array(images), np.array(targets)
+    return np.array(images), targets
