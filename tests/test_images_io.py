@@ -34,11 +34,18 @@ def setup_function(func):
     #os.mkdir(cache_directory)
     #os.chdir(cache_directory)
 
+
 def test_load_single_image():
     image_file_name = 'tests/resources/images/lungs/CHNCXR_0001_0.png'
     image = ami.load_image_from_disk(image_file_name, image_size=40)
 
     assert(image.shape == (40, 40, 3))
+
+def test_load_single_image_notexist():
+    image_file_name = 'tests/resources/images/lungs/missingfile.png'
+    with pytest.raises(FileNotFoundError) as fnf_err:
+        image = ami.load_image_from_disk(image_file_name, image_size=40)
+    assert image_file_name in str(fnf_err)
 
 def test_load_images_defaults():
     image_list = ami.load_images(image_path)
@@ -150,3 +157,24 @@ def test_load_images_df():
     X, y = ami.load_images_from_dataframe(df, 'lungfile', 'result')
     assert len(X) == 11
     assert y[3] in (0, 1)
+
+def test_load_images_df_sourcemissing():
+    df = pd.read_csv('tests/resources/datasets/lung-files-missing-files.csv')
+    # Two records contain a non existing file.  
+    # 1 with source missing: output = 2
+    # Another with destination missing: output = 0
+    X, y = ami.load_images_from_dataframe(df, 'lungfile', 'result')
+    assert len(X) == 10
+    assert y[3] in (0, 1)
+
+    assert 0 in y
+    assert 1 in y
+    assert not 2 in y
+
+def test_load_images_df_destmissing():
+    df = pd.read_csv('tests/resources/datasets/lung-files-missing-files.csv')
+    # Two records contain a non existing file.  
+    # 1 with source missing: output = 2
+    # Another with destination missing: output = 0
+    X, y = ami.load_images_from_dataframe(df, 'lungfile', 'maskfile', target_as_image=True)
+    assert len(X) == 9

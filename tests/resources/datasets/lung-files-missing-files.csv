@@ -1,0 +1,13 @@
+lungfile,maskfile,result
+tests/resources/images/lungs/CHNCXR_0001_0.png,tests/resources/images/lungmasks/CHNCXR_0001_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0002_0.png,tests/resources/images/lungmasks/CHNCXR_0002_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0003_0.png,tests/resources/images/lungmasks/CHNCXR_0003_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0004_0.png,tests/resources/images/lungmasks/CHNCXR_0004_0_mask.png,1
+tests/resources/images/lungs/XXXX.png,tests/resources/images/lungmasks/CHNCXR_0005_0_mask.png,2
+tests/resources/images/lungs/CHNCXR_0006_0.png,tests/resources/images/lungmasks/XXXX.png,0
+tests/resources/images/lungs/CHNCXR_0007_0.png,tests/resources/images/lungmasks/CHNCXR_0007_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0008_0.png,tests/resources/images/lungmasks/CHNCXR_0008_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0009_0.png,tests/resources/images/lungmasks/CHNCXR_0009_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0010_0.png,tests/resources/images/lungmasks/CHNCXR_0010_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0011_0.png,tests/resources/images/lungmasks/CHNCXR_0011_0_mask.png,1
+tests/resources/images/lungs/CHNCXR_0012_0.png,tests/resources/images/lungmasks/CHNCXR_0012_0_mask.png,1

@@ -28,6 +28,8 @@ def load_image_from_disk(path: str, image_size = None,
         np.array: A numpy array that represents the image
     '''
     im = imread(path) 
+    if im is None: # File does not exist
+        raise FileNotFoundError(path)
     return conversion.prepare(im, image_size, convert_to_grey, keep_3d_shape)
 
 def load_images(path: str, image_size = None, max_images: int = -1, 
@@ -133,20 +135,24 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
     df = adf.shuffle(df)
     for idx, row in df.iterrows() :
         file = row[image_column_name]
-        if file and os.path.exists(file):
+
+        filecheck_ok = True
+        try:
+            im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
+            if(target_as_image):
+                target_file = row[target_column_name]
+                if target_file:
+                    target_im = load_image_from_disk(target_file, image_size, convert_to_grey, keep_3d_shape)
+        except FileNotFoundError:
+            _logger.warning('File ' + file + ' not found')
+            filecheck_ok = False
+
+        if filecheck_ok :
+            images.append(im)
             if target_as_image:
                 # Check if the target file exists
-                target_file = row[target_column_name]
-                if target_file and os.path.exists(target_file):
-                    im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
-                    target_im = load_image_from_disk(target_file, image_size, convert_to_grey, keep_3d_shape)
-                    images.append(im)
-                    targets.append(target_im)
-                else:
-                    _logger.warning('File ' + target_file + ' not found')
+                targets.append(target_im)
             else:
-                im = load_image_from_disk(file, image_size, convert_to_grey, keep_3d_shape)
-                images.append(im)
                 if(isinstance(target_column_name, list)):
                     _current_targets = list()
                     for target_column in target_column_name:
