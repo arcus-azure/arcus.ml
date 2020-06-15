@@ -151,7 +151,6 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
                 if(isinstance(target_column_name, list)):
                     _current_targets = list()
                     for target_column in target_column_name:
-                        print(type(row[target_column]))
                         _current_targets.append(row[target_column])
                     targets.append(_current_targets)
                 else:
