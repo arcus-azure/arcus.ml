@@ -131,11 +131,13 @@ def test_image_url_headers():
         http_headers={'User-Agent': 'Postman'})
     assert len(img.shape) == 3
 
-def test_load_images_df():
+def test_load_images_df_multi():
     df = pd.read_csv('tests/resources/datasets/lung-files.csv')
-    X, y = ami.load_images_from_dataframe(df, 'lungfile', 'result')
+    X, outputs = ami.load_images_from_dataframe(df, 'lungfile', ['result','maskfile'])
     assert len(X) == 11
-    assert y[3] in (0, 1)
+    output1 = outputs[0]
+    assert output1[0] in (0, 1)
+    assert os.path.exists(output1[1])
 
 def test_load_images_set_df():
     df = pd.read_csv('tests/resources/datasets/lung-files.csv')
@@ -143,3 +145,8 @@ def test_load_images_set_df():
     assert len(X) == 11
     assert len(y[0].shape) == 3
 
+def test_load_images_df():
+    df = pd.read_csv('tests/resources/datasets/lung-files.csv')
+    X, y = ami.load_images_from_dataframe(df, 'lungfile', 'result')
+    assert len(X) == 11
+    assert y[3] in (0, 1)
