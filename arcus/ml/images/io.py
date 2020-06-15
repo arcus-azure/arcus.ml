@@ -127,6 +127,7 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
     Returns: 
         np.array: A numpy array that contains all selected images represented as np.array
+        np.array: A numpy array that represents all targets that were asked
     '''
     images = []
     targets = []
@@ -150,7 +151,6 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
                 if(isinstance(target_column_name, list)):
                     _current_targets = list()
                     for target_column in target_column_name:
-                        print(type(row[target_column]))
                         _current_targets.append(row[target_column])
                     targets.append(_current_targets)
                 else:
@@ -161,4 +161,4 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
         if(len(images) >= max_images and max_images > 0):
             break
     
-    return np.array(images), targets
+    return np.array(images), np.array(targets)

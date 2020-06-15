@@ -136,7 +136,7 @@ def test_load_images_df_multi():
     X, outputs = ami.load_images_from_dataframe(df, 'lungfile', ['result','maskfile'])
     assert len(X) == 11
     output1 = outputs[0]
-    assert output1[0] in (0, 1)
+    assert output1[0] in ('0', '1')
     assert os.path.exists(output1[1])
 
 def test_load_images_set_df():
