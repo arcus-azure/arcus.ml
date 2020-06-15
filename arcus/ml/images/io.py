@@ -147,6 +147,9 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
         except FileNotFoundError:
             _logger.warning('File ' + file + ' not found')
             filecheck_ok = False
+        except:
+            _logger.warning('File ' + file + ' resulted in an error')
+            filecheck_ok = False
 
         if filecheck_ok :
             images.append(im)
