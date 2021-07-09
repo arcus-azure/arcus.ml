@@ -8,3 +8,4 @@ seaborn
 scikit-learn
 scikit-image
 pillow>=8.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
+networkx>=2.6 # not directly required, pinned by Snyk to avoid a vulnerability
