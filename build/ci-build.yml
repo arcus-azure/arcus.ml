@@ -8,6 +8,7 @@ trigger:
     include:
     - arcus/*
     - tests/*
+    - requirements.txt
 
 pr:
   paths:
@@ -15,6 +16,7 @@ pr:
     - arcus/*
     - tests/*
     - build/ci-build.yml
+    - requirements.txt
 
 resources:
   repositories:
