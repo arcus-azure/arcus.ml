@@ -57,11 +57,11 @@ steps:
 
 - script: |
     lazydocs --output-path docs/preview arcus/ml
-    git config user.email "info@codit.eu" 
-    git config user.name "samvanhoutte"
+    git config user.email "$(Build.RequestedFor)"
+    git config user.name "$(Build.RequestedForEmail)"
     git add docs/preview
-    git commit -m "This is a commit message [skip ci]"
-    git push origin HEAD:$(Build.SourceBranchName)
+    git commit -m "Add SDK docs from Build $(Build.BuildId) [skip ci]"
+    git push origin $(Build.SourceBranchName)
   displayName: 'Generate code documentation'
   continueOnError: false
 
