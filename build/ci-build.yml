@@ -33,9 +33,14 @@ steps:
   parameters:
     manualTriggerVersion: preview
 
-- checkout: self
-  persistCredentials: true
+- script: echo "Source branch is $(Build.SourceBranchName)"
+- script: echo "Name user is $(Build.RequestedFor)"
+- script: echo "Email user is $(Build.RequestedForEmail)"
 
+- script: |
+    git checkout $(Build.SourceBranchName)
+  displayName: 'Checkout build branch'
+  
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.7'
@@ -57,8 +62,8 @@ steps:
 
 - script: |
     lazydocs --output-path docs/preview arcus/ml
-    git config user.email "$(Build.RequestedFor)"
-    git config user.name "$(Build.RequestedForEmail)"
+    git config user.email "$(Build.RequestedForEmail)"
+    git config user.name "$(Build.RequestedFor)"
     git add docs/preview
     git commit -m "Add SDK docs from Build $(Build.BuildId) [skip ci]"
     git push origin $(Build.SourceBranchName)
