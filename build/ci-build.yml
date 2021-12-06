@@ -62,6 +62,7 @@ steps:
 
 - script: |
     lazydocs --output-path docs/preview arcus/ml
+    git config --global --add url."git@github.com:".insteadOf "https://github.com/"
     git config user.email "$(Build.RequestedForEmail)"
     git config user.name "$(Build.RequestedFor)"
     git add docs/preview
