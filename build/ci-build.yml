@@ -56,6 +56,16 @@ steps:
   displayName: 'Install requirements'
 
 - script: |
+    lazydocs --output-path docs/preview arcus/ml
+    git config user.email "info@codit.eu" 
+    git config user.name "samvanhoutte"
+    git add docs/preview
+    git commit -m "This is a commit message [skip ci]"
+    git push
+  displayName: 'Generate code documentation'
+  continueOnError: false
+
+- script: |
     pip install pytest
     pip install pytest-cov
     pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
@@ -88,14 +98,6 @@ steps:
 #    pdoc --html --force --config show_source_code=False -o docs/ arcus/ml 
 #   displayName: 'Generate code documentation'
 #   continueOnError: true
-
-- script: |
-    lazydocs --output-path docs/preview arcus/ml
-    git add docs/preview
-    git commit -m "This is a commit message [skip ci]"
-    git push
-  displayName: 'Generate code documentation'
-  continueOnError: false
 
 - script: |
    python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
