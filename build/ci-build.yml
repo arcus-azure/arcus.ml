@@ -87,7 +87,7 @@ steps:
 #   continueOnError: true
 
 - script: |
-   lazydocs --output-path docs arcus/ml
+   lazydocs --output-path docs/preview arcus/ml
   displayName: 'Generate code documentation'
   continueOnError: false
 
