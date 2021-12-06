@@ -12,7 +12,7 @@ PM > pip3 install arcus-ml
 ```
 
 # Documentation
-All documentation can be found on [here](https://ml.arcus-azure.net/).
+All documentation can be found on [here](https://machine-learning.arcus-azure.net/).
 
 # Customers
 Are you an Arcus user? Let us know and [get listed](https://bit.ly/become-a-listed-arcus-user)!
