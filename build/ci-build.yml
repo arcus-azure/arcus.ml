@@ -60,11 +60,14 @@ steps:
 - script: pip install -r requirements.txt
   displayName: 'Install requirements'
 
+    # git config --global --add url."git@github.com:".insteadOf "https://github.com/"
+    # git config user.email "$(Build.RequestedForEmail)"
+    # git config user.name "$(Build.RequestedFor)"
+
 - script: |
     lazydocs --output-path docs/preview arcus/ml
-    git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-    git config user.email "$(Build.RequestedForEmail)"
-    git config user.name "$(Build.RequestedFor)"
+    git config user.email "sam.vanhoutte@marchitec.be"
+    git config user.name "samvanhoutte"
     git add docs/preview
     git commit -m "Add SDK docs from Build $(Build.BuildId) [skip ci]"
     git push origin $(System.PullRequest.SourceBranch)
