@@ -87,7 +87,10 @@ steps:
 #   continueOnError: true
 
 - script: |
-   lazydocs --output-path docs/preview arcus/ml
+    lazydocs --output-path docs/preview arcus/ml
+    git add docs/preview
+    git commit -m "This is a commit message [skip ci]"
+    git push
   displayName: 'Generate code documentation'
   continueOnError: false
 
