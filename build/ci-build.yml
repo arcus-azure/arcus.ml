@@ -33,12 +33,12 @@ steps:
   parameters:
     manualTriggerVersion: preview
 
-- script: echo "Source branch is $(Build.SourceBranchName)"
+- script: echo "Source branch is $(System.PullRequest.SourceBranch)"
 - script: echo "Name user is $(Build.RequestedFor)"
 - script: echo "Email user is $(Build.RequestedForEmail)"
 
 - script: |
-    git checkout $(Build.SourceBranchName)
+    git checkout $(System.PullRequest.SourceBranch)
   displayName: 'Checkout build branch'
   
 - task: UsePythonVersion@0
@@ -66,7 +66,7 @@ steps:
     git config user.name "$(Build.RequestedFor)"
     git add docs/preview
     git commit -m "Add SDK docs from Build $(Build.BuildId) [skip ci]"
-    git push origin $(Build.SourceBranchName)
+    git push origin $(System.PullRequest.SourceBranch)
   displayName: 'Generate code documentation'
   continueOnError: false
 
