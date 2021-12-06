@@ -61,7 +61,7 @@ steps:
     git config user.name "samvanhoutte"
     git add docs/preview
     git commit -m "This is a commit message [skip ci]"
-    git push
+    git push origin HEAD:$(Build.SourceBranchName)
   displayName: 'Generate code documentation'
   continueOnError: false
 
