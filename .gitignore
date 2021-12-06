@@ -139,3 +139,8 @@ src/build/
 .pytest_cache/
 .vscode/
 samples/temp/*
+
+# Docusaurus
+docs/build
+docs/.docusaurus
+docs/node_modules

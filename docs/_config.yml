@@ -1,7 +1,0 @@
-repository: arcus-azure/arcus.ml
-theme: jekyll-theme-slate
-logo: https://raw.githubusercontent.com/arcus-azure/arcus/master/media/arcus.png
-title: Arcus ML
-description: Machine learning in Python, common patterns
-plugins:
-  - jemoji

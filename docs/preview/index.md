@@ -1,9 +1,11 @@
 ---
-title: "Home"
+title: "Arcus - Azure Machine Learning"
 layout: default
 permalink: /
 redirect_from:
  - /index.html
+slug: /
+sidebar_label: Welcome
 ---
 
 # Arcus - Azure Machine Learning
