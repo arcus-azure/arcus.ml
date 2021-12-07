@@ -12,15 +12,6 @@ module.exports = {
   organizationName: 'arcus-azure', // Usually your GitHub org/user name.
   projectName: 'Arcus - Azure Machine Learning', // Usually your repo name.
   themeConfig: {
-    algolia: {
-      apiKey: process.env.ALGOLIA_API_KEY,
-      indexName: 'arcus-azure',
-      // Set `contextualSearch` to `true` when having multiple versions!!!
-      contextualSearch: false,
-      searchParameters: {
-        facetFilters: ["tags:machine-learning"]
-      },
-    },
     image: 'img/arcus.jpg',
     navbar: {
       title: 'Azure Machine Learning',
