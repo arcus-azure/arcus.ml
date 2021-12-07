@@ -71,14 +71,14 @@ steps:
     # git config user.email "$(Build.RequestedForEmail)"
     # git config user.name "$(Build.RequestedFor)"
 - script: |
-    lazydocs --output-path docs/preview arcus/ml
+    lazydocs --output-path docs/preview --overview-file="api.md" arcus/ml
     #could not read Username for 'https://github.com': terminal prompts disabled
     #git config --global --add url."git@github.com:".insteadOf "https://github.com/"
     git config user.email "sam.vanhoutte@marchitec.be"
     git config user.name "samvanhoutte"
     git add docs/preview
     git commit -m "Add SDK docs from Build $(Build.BuildId) [***NO_CI***]"
-    git push origin HEAD:$(System.PullRequest.SourceBranch)
+    git push origin HEAD:$(System.PullRequest.SourceBranch) --tags
   displayName: 'Generate code documentation'
   continueOnError: false
 
