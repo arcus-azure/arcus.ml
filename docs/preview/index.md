@@ -1,5 +1,5 @@
 ---
-title: "Arcus - Azure Machine Learning"
+title: "Arcus - Machine Learning"
 layout: default
 permalink: /
 redirect_from:
@@ -8,7 +8,7 @@ slug: /
 sidebar_label: Welcome
 ---
 
-# Arcus - Azure Machine Learning
+# Arcus - Machine Learning
 [![Build Status](https://dev.azure.com/codit/Arcus/_apis/build/status/arcus-azure.arcus.ml?branchName=master)](https://dev.azure.com/codit/Arcus/_build/latest?definitionId=836&branchName=master) [![PyPI version](https://badge.fury.io/py/arcus-ml.svg)](https://badge.fury.io/py/arcus-ml)
 
 Python Machine Learning development in a breeze.
