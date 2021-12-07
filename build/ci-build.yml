@@ -77,7 +77,7 @@ steps:
     git config user.email "sam.vanhoutte@marchitec.be"
     git config user.name "samvanhoutte"
     git add docs/preview
-    git commit -m "Add SDK docs from Build $(Build.BuildId) [skip ci]"
+    git commit -m "Add SDK docs from Build $(Build.BuildId) [***NO_CI***]"
     git push origin HEAD:$(System.PullRequest.SourceBranch)
   displayName: 'Generate code documentation'
   continueOnError: false
