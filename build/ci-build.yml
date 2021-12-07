@@ -19,6 +19,8 @@ pr:
     - tests/*
     - build/ci-build.yml
     - requirements.txt
+    exclude:
+    - docs/preview
 
 resources:
   repositories:
