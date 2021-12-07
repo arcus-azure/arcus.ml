@@ -10,7 +10,7 @@ trigger:
     - tests/*
     - requirements.txt
     exclude:
-    - docs/preview
+    - docs/preview/*
 
 pr:
   paths:
@@ -20,7 +20,7 @@ pr:
     - build/ci-build.yml
     - requirements.txt
     exclude:
-    - docs/preview
+    - docs/preview/*
 
 resources:
   repositories:
