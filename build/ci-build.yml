@@ -9,6 +9,8 @@ trigger:
     - arcus/*
     - tests/*
     - requirements.txt
+    exclude:
+    - docs/preview
 
 pr:
   paths:
