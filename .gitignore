@@ -138,10 +138,12 @@ src/build/
 *.egg-info
 .pytest_cache/
 .vscode/
+.vscode/*
 samples/temp/*
 
 # Docusaurus
 docs/build
 docs/.docusaurus
 docs/node_modules
+.vscode/settings.json
 .vscode/settings.json
