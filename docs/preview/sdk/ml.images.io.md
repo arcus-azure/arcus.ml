@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="../../../arcus/ml/images/io.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/io.py#L0"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 # <kbd>module</kbd> `ml.images.io`
 The io module provides standard helper functions to load images from disk 
@@ -11,7 +11,7 @@ The io module provides standard helper functions to load images from disk
 
 ---
 
-<a href="../../../arcus/ml/images/io.py#L18"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/io.py#L18"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `load_image_from_disk`
 
@@ -40,7 +40,7 @@ Loads an image from file, applying preformatting
 
 ---
 
-<a href="../../../arcus/ml/images/io.py#L35"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/io.py#L35"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `load_images`
 
@@ -73,7 +73,7 @@ Loads the images from a specific folder
 
 ---
 
-<a href="../../../arcus/ml/images/io.py#L64"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/io.py#L64"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `load_image_from_url`
 
@@ -110,7 +110,7 @@ Loads an image from a given url, applying preformatting and supporting file cach
 
 ---
 
-<a href="../../../arcus/ml/images/io.py#L117"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/io.py#L117"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `load_images_from_dataframe`
 

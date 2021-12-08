@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="../../../arcus/ml/evaluation/classification.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/evaluation/classification.py#L0"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 # <kbd>module</kbd> `ml.evaluation.classification`
 The classification module allows users to evaluate and visualize classifiers 
@@ -8,7 +8,7 @@ The classification module allows users to evaluate and visualize classifiers
 
 ---
 
-<a href="../../../arcus/ml/evaluation/classification.py#L13"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/evaluation/classification.py#L13"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `evaluate_model`
 
@@ -41,7 +41,7 @@ Will predict and evaluate a model against a test set
 
 ---
 
-<a href="../../../arcus/ml/evaluation/classification.py#L40"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/evaluation/classification.py#L40"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `plot_roc_curve`
 

@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="../../../arcus/ml/images/conversion.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/conversion.py#L0"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 # <kbd>module</kbd> `ml.images.conversion`
 The conversion module allows users to transform images freely 
@@ -8,7 +8,7 @@ The conversion module allows users to transform images freely
 
 ---
 
-<a href="../../../arcus/ml/images/conversion.py#L13"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/conversion.py#L13"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `to_blackwhite`
 
@@ -34,7 +34,7 @@ Transforms an image to a black & white image
 
 ---
 
-<a href="../../../arcus/ml/images/conversion.py#L39"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/conversion.py#L39"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `prepare`
 
@@ -63,7 +63,7 @@ Takes an image and applies preformatting
 
 ---
 
-<a href="../../../arcus/ml/images/conversion.py#L66"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/conversion.py#L66"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `crop`
 
@@ -94,7 +94,7 @@ Crops an image based on the specified size
 
 ---
 
-<a href="../../../arcus/ml/images/conversion.py#L80"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/conversion.py#L80"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `get_fragments`
 

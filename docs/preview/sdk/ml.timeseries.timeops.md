@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="../../../arcus/ml/timeseries/timeops.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/timeseries/timeops.py#L0"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 # <kbd>module</kbd> `ml.timeseries.timeops`
 The timeops module provides helpful functionality for timeseries datasets 
@@ -8,7 +8,7 @@ The timeops module provides helpful functionality for timeseries datasets
 
 ---
 
-<a href="../../../arcus/ml/timeseries/timeops.py#L10"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/timeseries/timeops.py#L10"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `set_timeseries`
 
@@ -33,7 +33,7 @@ Transforms the dataframe to a timeseries enabled dataframe by applying a DateTim
 
 ---
 
-<a href="../../../arcus/ml/timeseries/timeops.py#L25"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/timeseries/timeops.py#L25"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `add_time_reference`
 
@@ -65,7 +65,7 @@ This method will add a reference column to the DataFrame that contains the value
 
 ---
 
-<a href="../../../arcus/ml/timeseries/timeops.py#L39"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/timeseries/timeops.py#L39"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `time_slice`
 
@@ -97,7 +97,7 @@ This method takes a time series DataFrame and only returns the time slice, based
 
 ---
 
-<a href="../../../arcus/ml/timeseries/timeops.py#L56"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/timeseries/timeops.py#L56"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `get_windows`
 
@@ -134,7 +134,7 @@ Returns: a tuple with the following objects:
 
 ---
 
-<a href="../../../arcus/ml/timeseries/timeops.py#L141"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/timeseries/timeops.py#L141"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `combine_time_ranges`
 

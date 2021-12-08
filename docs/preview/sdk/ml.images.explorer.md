@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="../../../arcus/ml/images/explorer.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/explorer.py#L0"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 # <kbd>module</kbd> `ml.images.explorer`
 The image explorer module provides standard helper functions to explore and visualize images 
@@ -8,7 +8,7 @@ The image explorer module provides standard helper functions to explore and visu
 
 ---
 
-<a href="../../../arcus/ml/images/explorer.py#L14"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/explorer.py#L14"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `show_image`
 
@@ -33,7 +33,7 @@ Visualizes an image
 
 ---
 
-<a href="../../../arcus/ml/images/explorer.py#L40"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/explorer.py#L40"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `visualize`
 
@@ -71,7 +71,7 @@ visualize(image_sets, 6, False)
 
 ---
 
-<a href="../../../arcus/ml/images/explorer.py#L93"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/images/explorer.py#L93"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `visualize_classes`
 
