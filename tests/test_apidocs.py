@@ -23,6 +23,8 @@ def __fix_html_file(md_file:str):
 
     # Close the img tag
     filedata = filedata.replace('></a>', ' /></a>')
+    # Remove the style of images
+    filedata = filedata.replace('style="float:right;"', '')
 
     # Write the file out again
     with open(md_file, 'w') as file:
