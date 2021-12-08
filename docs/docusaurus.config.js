@@ -6,7 +6,7 @@ module.exports = {
   title: 'Arcus - Azure Machine Learning',
   url: 'https://machine-learning.arcus-azure.net/',
   baseUrl: '/',
-  onBrokenLinks: 'throw',
+  onBrokenLinks: 'warn',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/arcus.png',
   organizationName: 'arcus-azure', // Usually your GitHub org/user name.
