@@ -44,6 +44,10 @@ The approach to go, is to leverage the following command, which will add a symbo
 pip install -e /path-to-arcus
 ```
 
+## Code documentation
+
+The modules and methods have to be documented and decorated with Google Style Python Docstrings.  These docstrings will be used by `lazydocs` to automatically generate the SDK documentation for the Arcus library.
+
 # Build process
 
 The actual build process executes the following steps:
