@@ -37,18 +37,6 @@ steps:
   parameters:
     manualTriggerVersion: preview
 
-# The persistCredentials will leave the OAuth token in the Git config after the initial fetch
-- checkout: self
-  persistCredentials: true
-
-- script: echo "Source branch is $(System.PullRequest.SourceBranch)"
-- script: echo "Name user is $(Build.RequestedFor)"
-- script: echo "Email user is $(Build.RequestedForEmail)"
-
-#- script: |
-#    git checkout $(System.PullRequest.SourceBranch)
-#  displayName: 'Checkout build branch'
-  
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '3.7'
@@ -67,20 +55,6 @@ steps:
 
 - script: pip install -r requirements.txt
   displayName: 'Install requirements'
-
-    # git config user.email "$(Build.RequestedForEmail)"
-    # git config user.name "$(Build.RequestedFor)"
-- script: |
-    lazydocs --output-path docs/preview --overview-file="api.md" arcus/ml
-    #could not read Username for 'https://github.com': terminal prompts disabled
-    #git config --global --add url."git@github.com:".insteadOf "https://github.com/"
-    git config user.email "sam.vanhoutte@marchitec.be"
-    git config user.name "samvanhoutte"
-    git add docs/preview
-    git commit -m "Add SDK docs from Build $(Build.BuildId) [***NO_CI***]"
-    git push origin HEAD:$(System.PullRequest.SourceBranch) --tags
-  displayName: 'Generate code documentation'
-  continueOnError: false
 
 - script: |
     pip install pytest

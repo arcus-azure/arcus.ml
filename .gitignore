@@ -144,3 +144,4 @@ samples/temp/*
 docs/build
 docs/.docusaurus
 docs/node_modules
+.vscode/settings.json
