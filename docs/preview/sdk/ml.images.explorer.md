@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="../../../arcus/ml/images/explorer.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/images/explorer.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 # <kbd>module</kbd> `ml.images.explorer`
 The image explorer module provides standard helper functions to explore and visualize images 
@@ -8,7 +8,7 @@ The image explorer module provides standard helper functions to explore and visu
 
 ---
 
-<a href="../../../arcus/ml/images/explorer.py#L14"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/images/explorer.py#L14"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `show_image`
 
@@ -28,11 +28,12 @@ Visualizes an image
  - <b>`image`</b> (np.array):  the image to visualize, represented as numpy array 
  - <b>`hide_grid`</b> (bool):  indicating if the grid (with the pixel positions) should be hidden 
  - <b>`grid_size`</b> ((int, int)):  the size of the grid to plot the images in.  By default auto size is being applied 
+ - <b>`silent_mode`</b> (bool):  indicates if the image has to be plotted, or just returned 
 
 
 ---
 
-<a href="../../../arcus/ml/images/explorer.py#L39"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/images/explorer.py#L40"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `visualize`
 
@@ -56,16 +57,21 @@ Visualizes the images in the image_sets in a grid
  - <b>`randomize`</b> (bool):  if True, images will be selected randomly from the imageset, if False, the first n images will be taken 
  - <b>`grid_size`</b> ((int, int)):  the size of the grid to plot the images in.  By default auto size is being applied 
  - <b>`hide_grid`</b> (bool):  indicates if the grid with pixellocations should be hidden 
+ - <b>`silent_mode`</b> (bool):  indicates if the image has to be plotted, or just returned 
 
 
 
 **Example:**
- image_sets = {'predicted': y_pred, 'actuals': y_test} visualize(image_sets, 6, False) 
+ 
+
+image_sets = {'predicted': y_pred, 'actuals': y_test} 
+
+visualize(image_sets, 6, False) 
 
 
 ---
 
-<a href="../../../arcus/ml/images/explorer.py#L89"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/images/explorer.py#L93"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `visualize_classes`
 
@@ -82,6 +88,8 @@ visualize_classes(
 
 Visualizes the images from the image_set in a grid and print the corresponding class on the charts 
 
+
+
 **Args:**
  
  - <b>`image_set`</b> (np.array):  an array of images to pick from 
@@ -89,9 +97,16 @@ Visualizes the images from the image_set in a grid and print the corresponding c
  - <b>`image_count`</b> (int):  the amount of images to visualize from an image set 
  - <b>`randomize`</b> (bool):  if True, images will be selected randomly from the imageset, if False, the first n images will be taken 
  - <b>`grid_size`</b> ((int, int)):  the size of the grid to plot the images in.  By default auto size is being applied 
+ - <b>`silent_mode`</b> (bool):  indicates if the image has to be plotted, or just returned 
+
+
 
 **Example:**
- image_sets = {'predicted': y_pred, 'actuals': y_test} visualize(image_sets, 6, False) 
+ 
+
+image_sets = {'predicted': y_pred, 'actuals': y_test} 
+
+visualize(image_sets, 6, False) 
 
 
 

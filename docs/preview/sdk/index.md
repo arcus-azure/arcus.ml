@@ -15,7 +15,7 @@
 - [`ml.neuralnetworks`](./ml.neuralnetworks.md#module-mlneuralnetworks)
 - [`ml.neuralnetworks.keras`](./ml.neuralnetworks.keras.md#module-mlneuralnetworkskeras): The keras module provides additions to work and visualize Keras neural networks
 - [`ml.timeseries`](./ml.timeseries.md#module-mltimeseries)
-- [`ml.timeseries.timeops`](./ml.timeseries.timeops.md#module-mltimeseriestimeops): The timeops module provides interesting standard functionality for timeseries datasets
+- [`ml.timeseries.timeops`](./ml.timeseries.timeops.md#module-mltimeseriestimeops): The timeops module provides helpful functionality for timeseries datasets
 
 ## Classes
 
@@ -41,11 +41,11 @@
 - [`io.load_image_from_disk`](./ml.images.io.md#function-load_image_from_disk): Loads an image from file, applying preformatting
 - [`io.load_image_from_url`](./ml.images.io.md#function-load_image_from_url): Loads an image from a given url, applying preformatting and supporting file caching
 - [`io.load_images`](./ml.images.io.md#function-load_images): Loads the images from a specific folder
-- [`io.load_images_from_dataframe`](./ml.images.io.md#function-load_images_from_dataframe): Loads the images from a specific folder
+- [`io.load_images_from_dataframe`](./ml.images.io.md#function-load_images_from_dataframe): Loads a set images from disk, based on the file name in a Data Frame.  
 - [`keras.enable_gpu`](./ml.neuralnetworks.keras.md#function-enable_gpu): Enables Keras to run on the GPU
-- [`timeops.add_time_reference`](./ml.timeseries.timeops.md#function-add_time_reference): This method will add a reference column to the DataFrame that points to n items before
-- [`timeops.combine_time_ranges`](./ml.timeseries.timeops.md#function-combine_time_ranges)
-- [`timeops.get_windows`](./ml.timeseries.timeops.md#function-get_windows)
+- [`timeops.add_time_reference`](./ml.timeseries.timeops.md#function-add_time_reference): This method will add a reference column to the DataFrame that contains the value of reference column of n items before
+- [`timeops.combine_time_ranges`](./ml.timeseries.timeops.md#function-combine_time_ranges): This method combines multiple timeseries (as DataFrame) and removes the overlapping time sections
+- [`timeops.get_windows`](./ml.timeseries.timeops.md#function-get_windows): This method take a DataFrame and returns a set of time windows of a specific length and a given column, eventually grouped by another column
 - [`timeops.set_timeseries`](./ml.timeseries.timeops.md#function-set_timeseries): Transforms the dataframe to a timeseries enabled dataframe
 - [`timeops.time_slice`](./ml.timeseries.timeops.md#function-time_slice): This method takes a time series DataFrame and only returns the time slice, based on the start & end date
 

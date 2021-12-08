@@ -1,6 +1,6 @@
 <!-- markdownlint-disable -->
 
-<a href="../../../arcus/ml/dataframes.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/dataframes.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 # <kbd>module</kbd> `ml.dataframes`
 The dataframes module provides a lot of common operations for dataframe handling 
@@ -8,7 +8,7 @@ The dataframes module provides a lot of common operations for dataframe handling
 
 ---
 
-<a href="../../../arcus/ml/dataframes.py#L13"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/dataframes.py#L13"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `shuffle`
 
@@ -33,7 +33,7 @@ Shuffles the DataFrame and returns it
 
 ---
 
-<a href="../../../arcus/ml/dataframes.py#L25"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/dataframes.py#L25"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `one_hot_encode`
 
@@ -66,7 +66,7 @@ Take a categorical column and pivots the DataFrame to add columns (0 or 1 value)
 
 ---
 
-<a href="../../../arcus/ml/dataframes.py#L50"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/dataframes.py#L50"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `keep_numeric_features`
 
@@ -91,7 +91,7 @@ Takes the DataFrame and removes all non-numeric columns or features
 
 ---
 
-<a href="../../../arcus/ml/dataframes.py#L61"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/dataframes.py#L61"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `plot_features`
 
@@ -124,7 +124,7 @@ Plots the distribution of the relevant columns of a DataFrame
 
 ---
 
-<a href="../../../arcus/ml/dataframes.py#L101"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/dataframes.py#L101"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `to_timeseries`
 
@@ -137,7 +137,7 @@ This is deprecated and it is advised to use the timeseries.set_timeseries functi
 
 ---
 
-<a href="../../../arcus/ml/dataframes.py#L107"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../../arcus/ml/dataframes.py#L107"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `distribute_class`
 
