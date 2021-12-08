@@ -8,6 +8,7 @@ trigger:
     include:
     - arcus/*
     - tests/*
+    - requirements.txt
 
 pr:
   paths:
@@ -15,6 +16,7 @@ pr:
     - arcus/*
     - tests/*
     - build/ci-build.yml
+    - requirements.txt
 
 resources:
   repositories:
@@ -44,7 +46,7 @@ steps:
     script: 'sed -i ''s/1.0.0/$(Package.Version).$(Build.BuildNumber)/g'' arcus/ml/__init__.py'
     failOnStderr: true
     
-- script: python -m pip install --upgrade pip setuptools wheel pdoc3
+- script: python -m pip install --upgrade pip setuptools wheel lazydocs
   displayName: 'Install tools'
 
 - script: pip install -r requirements.txt
@@ -79,10 +81,10 @@ steps:
   inputs:
     pythonUploadServiceConnection: 'Arcus ML PyPi feed'
 
-- script: |
-   pdoc --html --force --config show_source_code=False -o docs/ arcus/ml 
-  displayName: 'Generate code documentation'
-  continueOnError: true
+# - script: |
+#    pdoc --html --force --config show_source_code=False -o docs/ arcus/ml 
+#   displayName: 'Generate code documentation'
+#   continueOnError: true
 
 - script: |
    python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
