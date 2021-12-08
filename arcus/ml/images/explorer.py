@@ -18,6 +18,7 @@ def show_image(image: np.array, hide_grid: bool = True, grid_size = None, silent
         image (np.array): the image to visualize, represented as numpy array
         hide_grid (bool): indicating if the grid (with the pixel positions) should be hidden
         grid_size ((int, int)): the size of the grid to plot the images in.  By default auto size is being applied
+        silent_mode (bool): indicates if the image has to be plotted, or just returned
     '''
     _image_shape = image.shape
     _is_grey_scale = len(_image_shape) == 2
@@ -45,9 +46,12 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
         randomize (bool): if True, images will be selected randomly from the imageset, if False, the first n images will be taken
         grid_size ((int, int)): the size of the grid to plot the images in.  By default auto size is being applied
         hide_grid (bool): indicates if the grid with pixellocations should be hidden
+        silent_mode (bool): indicates if the image has to be plotted, or just returned
 
     Example:
+        
         image_sets = {'predicted': y_pred, 'actuals': y_test}
+
         visualize(image_sets, 6, False)
     '''
     _f, _axes = plt.subplots(len(image_sets), image_count, figsize=grid_size, sharex=False)
@@ -89,14 +93,19 @@ def visualize(image_sets: dict, image_count: int = 10, randomize: bool = True, g
 def visualize_classes(image_set: np.array, classes: np.array, image_count: int = 10, randomize: bool = True, grid_size = None, silent_mode: bool = False):
     '''
     Visualizes the images from the image_set in a grid and print the corresponding class on the charts
+    
     Args:
         image_set (np.array): an array of images to pick from
         classes (np.array): the corresponding labels of the classes for the images
         image_count (int): the amount of images to visualize from an image set
         randomize (bool): if True, images will be selected randomly from the imageset, if False, the first n images will be taken
         grid_size ((int, int)): the size of the grid to plot the images in.  By default auto size is being applied
+        silent_mode (bool): indicates if the image has to be plotted, or just returned
+
     Example:
+
         image_sets = {'predicted': y_pred, 'actuals': y_test}
+
         visualize(image_sets, 6, False)
     '''
     _f, _axes = plt.subplots(1, image_count, figsize=grid_size, sharex=False)
