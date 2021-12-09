@@ -118,16 +118,21 @@ def load_images_from_dataframe(df: pd.DataFrame, image_column_name:str, target_c
                                 image_size = None, max_images: int = -1, target_as_image: bool = False,
                                 convert_to_grey: bool = False, keep_3d_shape = False) -> (np.array, np.array):
     '''
-    Loads the images from a specific folder
+    Loads a set images from disk, based on the file name in a Data Frame.  
+    And returns a related array (target) that can contain values from another column, or also images from disk
+
     Args:
-        path (str): The path or folder name to load images from.  This can be a relative or fully qualified path
+        df (pd.DataFrame): the DataFrame, containing the references to the image
+        image_column_name (str): The name of the column that contains the image reference
+        target_column_name (str): The name of the column that contains the related target data
         image_size (tuple): The image size can be passed as tuple (W, H) or as int (W=H)
         max_images (int): The maximum amount of images to load from the folder.  If 0 or smaller, all images will be returned
-        target_as_image (bool): Defines if the target column contains file names that should be loaded as image
-        valid_extensions (np.array): The file extensions that should be filtered.  Defaults to jpg, jpeg, gif and png
+        target_as_image (bool): Defines if the target column contains file names that should be loaded as image.  If not, the column data will be used in the target array
         convert_to_grey (bool): This would reduce the size (and shape) of the image in making it a greyscale
         keep_3d_shape (bool): Only used when convert_to_grey is true.  Will keep the images in shape (H,W,1) in that case
+    
     Returns: 
+        a tuple with the following objects:
         np.array: A numpy array that contains all selected images represented as np.array
         np.array: A numpy array that represents all targets that were asked
     '''

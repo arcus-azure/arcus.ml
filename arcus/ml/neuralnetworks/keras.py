@@ -10,7 +10,8 @@ import os
 _logger = logging.getLogger()
 
 def enable_gpu() -> bool:
-    '''Enables Keras to run on the GPU
+    '''
+    Enables Keras to run on the GPU
     First it checks if there's a "physical device" available of type GPU
     If not, it will try to leverage plaidml for GPU enabling
 

@@ -1,5 +1,5 @@
 '''
-The timeops module provides interesting standard functionality for timeseries datasets
+The timeops module provides helpful functionality for timeseries datasets
 '''
 
 import pandas as pd
@@ -24,25 +24,29 @@ def set_timeseries(df: pd.DataFrame, time_column:str) -> pd.DataFrame:
 
 def add_time_reference(sorted_df: pd.DataFrame, n: int, reference_column: str, new_column: str) -> pd.DataFrame:
     '''
-    This method will add a reference column to the DataFrame that points to n items before
+    This method will add a reference column to the DataFrame that contains the value of reference column of n items before
+
     Args:
         sorted_df (pd.DataFrame): a DataFrame that is sorted by the time
         n (int): the number of records to look back for the referencing columns
         new_column (str): the name of the new column
+
     Returns:
-        (pd.DataFrame): the dataframe with the new column created
+        pd.DataFrame: the dataframe with the new column created
     '''
     sorted_df[new_column] = sorted_df[reference_column].shift(n)
 
 def time_slice(df: pd.DataFrame, time_column:str, start: datetime.datetime = None, end: datetime.datetime = None):
     '''
     This method takes a time series DataFrame and only returns the time slice, based on the start & end date
+
     Args:
         df (pd.DataFrame): The indexed Data Frame , which should be a DatetimeIndex
         start (datetime): The start time of the time slice.  When skipped, the time slice begins at the beginning of the index
         end (datetime): The end time of the time slice.  When skipped, the time slice end at the end of the index
+    
     Returns:
-        (pd.DataFrame): the dataframe only containing the records inside the time slice
+        pd.DataFrame: the dataframe only containing the records inside the time slice
     '''
     if(df.index is None or type(df.index) != pd.DatetimeIndex):
         df = set_timeseries(df, time_column)
@@ -50,6 +54,23 @@ def time_slice(df: pd.DataFrame, time_column:str, start: datetime.datetime = Non
     return df.loc[start:end]
 
 def get_windows(sorted_df: pd.DataFrame, window_size: int, window_stride: int = 1, group_column: str = None, zero_padding: bool = False, remove_group_column: bool = False, target_column: str = None) -> np.array:
+    '''
+    This method take a DataFrame and returns a set of time windows of a specific length and a given column, eventually grouped by another column
+
+    Args:
+        sorted_df (pd.DataFrame): A sorted Data Frame by a DatetimeIndex, that contains all time values
+        window_size (int): The size of a window.  How much record values should be added in every window.  Consider this as a slice of the time series.
+        window_stride (int): How much records should be between the different windows?  (Default: 1)
+        group_column (str): The name of the column on which you should group the time windows.  This could be something like device_id.  Optional.
+        zero_padding (bool): If True, zeros will be added in the first time windows, to fill the array, prior to the first values.
+        remove_group_column (bool): Indicates if the actual group column should be removed from the destination data frame
+        target_column (str): Used to return a related array of values, taking from the column with this name.  Commonly used to specify classes in training sets.
+    
+    Returns: a tuple with the following objects:
+        np.array: A multi dimensional array with all the windows, eventuall grouped
+        np.array: An array, with all the linked target values
+    '''
+
     if group_column is None:
         return __get_windows_from_group(sorted_df, window_size, window_stride, zero_padding, target_column)
 
@@ -116,7 +137,17 @@ def __pop_from_array(my_array,pc):
     new_array = np.hstack((my_array[:,:i],my_array[:,i+1:]))
     return new_array, pop
 
+
 def combine_time_ranges(*args: pd.DataFrame):
+    '''
+    This method combines multiple timeseries (as DataFrame) and removes the overlapping time sections
+
+    Args:
+        *args (pd.DataFrame): A list of DataFrames, containing time series and the same layout.
+    
+    Returns: 
+        pd.DataFrame: A DataFrame, containing all unique, ordered time series data from the given DataFrames
+    '''
     _result_df = pd.concat(args)
     _result_df = _result_df.drop_duplicates()
     return _result_df
