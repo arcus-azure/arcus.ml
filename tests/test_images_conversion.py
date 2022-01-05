@@ -6,7 +6,7 @@ import arcus.ml.images.io as ami
 import arcus.ml.images.conversion as conv
 import logging
 import numpy as np
-from hypothesis import given, event, settings, note, Verbosity, strategies as st
+from hypothesis import given, strategies as st
 
 image_path = 'tests/resources/images/lungs'
 
