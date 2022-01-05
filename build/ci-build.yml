@@ -55,6 +55,7 @@ steps:
 - script: |
     pip install pytest
     pip install pytest-cov
+    pip install hypothesis
     pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
   displayName: 'Unit tests (pytest)'
 
