@@ -16,24 +16,30 @@ def to_blackwhite(image_list: np.array, threshold = 128, keep_3d_shape = False) 
     Args:
         image_list (np.array): A numpy array that contains all selected images represented as np.array
         threshold (int): The threshold (between 0 and 255) that decides a pixel will be 0 or 255 (W/B)
+        keep_3d_shape (bool): The flag indicating whether to keep the images in shape (H,W,1) or not when encoutering 2D arrays
     Returns: 
         np.array: A numpy array that contains all black & white images represented as np.array
     '''
+    if threshold < 0 or threshold > 255:
+        raise ValueError("Requires a threshold for black/white conversion between 0-255 (inconclusive)")
+
+    def to_gray_scale(img):
+        return np.dot(img, [0.3, 0.59, 0.11])
+    def make_black_or_white(img):
+        return  1.0 * (img > threshold)
+
     images = []
     for img in image_list:
-        # Check if the image is scaled down by 255 or not
-        if(np.count_nonzero(img > 1)==0):
+        is_scaled_down_by_255 = np.count_nonzero(img > 1) == 0
+        if is_scaled_down_by_255:
             img *= 255
-        if(len(img.shape) == 3):
-            if(img.shape[2] == 3):
-                # Convert to grey scale
-                img = np.dot(img, [0.3, 0.59, 0.11])
+        if(len(img.shape) == 3 and img.shape[2] == 3):
+            img = to_gray_scale(img)
         if (len(img.shape) == 2 and keep_3d_shape):
             img = np.expand_dims(img, -1)
-        # make all pixels < threshold black
-        img = 1.0 * (img > threshold) 
+        img = make_black_or_white(img) 
         images.append(img)
-    
+
     return np.array(images)
 
 def prepare(image: np.array, image_size = None, 
