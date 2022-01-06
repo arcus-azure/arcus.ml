@@ -8,7 +8,9 @@ trigger:
     include:
     - arcus/*
     - tests/*
+    - build/*
     - requirements.txt
+
 
 pr:
   paths:
