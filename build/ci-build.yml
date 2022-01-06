@@ -94,7 +94,7 @@ stages:
 
   - stage: Release
     dependsOn: UnitTests
-    condition: succeeed()
+    condition: succeeded()
     jobs:
       - job: PushToPyPi
         displayName: 'Package wheel and push to PyPi'
