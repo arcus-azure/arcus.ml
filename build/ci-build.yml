@@ -8,9 +8,7 @@ trigger:
     include:
     - arcus/*
     - tests/*
-    - build/*
     - requirements.txt
-
 
 pr:
   paths:
@@ -66,7 +64,7 @@ stages:
   - stage: UnitTests
     displayName: Unit Tests
     dependsOn: Build
-    condition: succeedded()
+    condition: succeeded()
     jobs:
       - job: UnitTests
         displayName: 'Run unit tests'
@@ -96,7 +94,7 @@ stages:
 
   - stage: Release
     dependsOn: UnitTests
-    condition: succeeded()
+    condition: succeeed()
     jobs:
       - job: PushToPyPi
         displayName: 'Package wheel and push to PyPi'
