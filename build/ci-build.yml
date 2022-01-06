@@ -41,7 +41,7 @@ stages:
         steps:
           - template: 'pypi/determine-pr-version.yml@templates'
             parameters:
-            manualTriggerVersion: preview
+              manualTriggerVersion: preview
           - task: UsePythonVersion@0
             inputs:
               versionSpec: $(Python.Version)
