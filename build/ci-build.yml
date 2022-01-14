@@ -25,74 +25,102 @@ resources:
       name: arcus-azure/azure-devops-templates
       endpoint: arcus-azure
 
+variables:
+  - template: ./variables/build.yml
+
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: $(Vm.Image)
 
-steps:
-- template: 'pypi/determine-pr-version.yml@templates'
-  parameters:
-    manualTriggerVersion: preview
+stages:
+  - stage: Build
+    jobs:
+      - job: DefineVersion
+        displayName: 'Define version number'
+        steps:
+          - template: 'pypi/determine-pr-version.yml@templates'
+            parameters:
+              manualTriggerVersion: preview
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: $(Python.Version)
+              addToPath: true
+          - task: Bash@3
+            displayName: 'Update version number'
+            inputs:
+              targetType: 'inline'
+              script: 'sed -i ''s/1.0.0/$(Package.Version).$(Build.BuildNumber)/g'' arcus/ml/__init__.py'
+              failOnStderr: true
+          - task: CopyFiles@2
+            displayName: 'Copy build artifacts'
+            inputs:
+              contents: '**/*.py'
+              targetFolder: '$(Pipeline.Workspace)/build'
+          - task: PublishPipelineArtifact@0
+            displayName: 'Publish build artifacts'
+            inputs:
+              targetPath: '$(Pipeline.Workspace)/build'
+              artifactName: Build
 
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.7'
-    addToPath: true
-    architecture: 'x64'
+  - stage: UnitTests
+    displayName: Unit Tests
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: UnitTests
+        displayName: 'Run unit tests'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download build artifacts'
+            inputs:
+              artifact: 'Build'
+              path: '$(Build.SourcesDirectory)'
+          - script: pip install -r requirements.txt
+            displayName: 'Install requirements'
+          - script: |
+              pip install pytest
+              pip install pytest-cov
+              pip install hypothesis
+              pip install lazydocs
+              pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
+            displayName: 'Unit tests (pytest)'
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFiles: '**/test-*.xml'
+              testRunTitle: 'Publish test results for Python $(Python.Version)'
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+              reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
-- task: Bash@3
-  displayName: 'Update version number'
-  inputs:
-    targetType: 'inline'
-    script: 'sed -i ''s/1.0.0/$(Package.Version).$(Build.BuildNumber)/g'' arcus/ml/__init__.py'
-    failOnStderr: true
-    
-- script: python -m pip install --upgrade pip setuptools wheel lazydocs
-  displayName: 'Install tools'
-
-- script: pip install -r requirements.txt
-  displayName: 'Install requirements'
-
-- script: |
-    pip install pytest
-    pip install pytest-cov
-    pip install hypothesis
-    pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
-  displayName: 'Unit tests (pytest)'
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  inputs:
-    testResultsFiles: '**/test-*.xml'
-    testRunTitle: 'Publish test results for Python $(python.version)'
-
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
-
-- script: |    
-    python setup.py sdist bdist_wheel 
-  displayName: 'Build wheels'
-
-- script: python -m pip install --upgrade twine
-  displayName: 'Install Twine'
-
-- task: TwineAuthenticate@1
-  inputs:
-    pythonUploadServiceConnection: 'Arcus ML PyPi feed'
-
-- script: |
-   python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
-  displayName: 'Publish to PyPi dev'
-  condition: succeededOrFailed()
-
-- task: CopyFiles@2  
-  inputs:    
-    targetFolder: $(Build.ArtifactStagingDirectory)
-
-- task: PublishBuildArtifacts@1  
-  inputs:    
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'                  
-    ArtifactName: 'dist'    
-    publishLocation: 'Container'
+  - stage: Release
+    dependsOn: UnitTests
+    condition: succeeded()
+    jobs:
+      - job: PushToPyPi
+        displayName: 'Package wheel and push to PyPi'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download build artifacts'
+            inputs:
+              artifact: 'Build'
+              path: '$(Build.SourcesDirectory)'
+          - script: python -m pip install --upgrade pip setuptools wheel lazydocs twine
+            displayName: 'Install tools'
+          - script: python setup.py sdist bdist_wheel 
+            displayName: 'Build wheels'
+          - task: TwineAuthenticate@1
+            inputs:
+              pythonUploadServiceConnection: 'Arcus ML PyPi feed'
+          - script: python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
+            displayName: 'Publish to PyPi dev'
+            condition: succeededOrFailed()
+          - task: CopyFiles@2
+            inputs:
+              targetFolder: $(Build.ArtifactStagingDirectory)
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'dist'
+              publishLocation: 'Container'
