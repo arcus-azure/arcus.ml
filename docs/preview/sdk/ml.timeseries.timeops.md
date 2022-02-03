@@ -134,7 +134,7 @@ Returns: a tuple with the following objects:
 
 ---
 
-<a href="../../../arcus/ml/timeseries/timeops.py#L141"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
+<a href="../../../arcus/ml/timeseries/timeops.py#L159"><img align="right"  src="https://img.shields.io/badge/-source-cccccc?style=flat-square" /></a>
 
 ## <kbd>function</kbd> `combine_time_ranges`
 
