@@ -1,3 +1,4 @@
 variables:
   Vm.Image: 'ubuntu-latest'
   Python.Version: '3.7'
+  Project: 'Arcus.ML'

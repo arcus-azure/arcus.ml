@@ -1,14 +1,11 @@
-# Starter pipeline
-
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+name: $(Package.Version)
 
 trigger: none
 pr: none
 
-pool:
-  vmImage: 'ubuntu-latest'
+parameters:
+  - name: 'Package.Version'
+    type: 'string'
 
 resources:
   repositories:
@@ -17,58 +14,119 @@ resources:
       name: arcus-azure/azure-devops-templates
       endpoint: arcus-azure
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '3.7'
-    addToPath: true
-    architecture: 'x64'
+variables:
+  - template: ./variables/build.yml
 
-- script: python -m pip install --upgrade pip setuptools wheel
-  displayName: 'Install tools'
+pool:
+  vmImage: $(Vm.Image)
 
-- script: pip install -r requirements.txt
-  displayName: 'Install requirements'
+stages:
+  - stage: Build
+    jobs:
+      - job: DefineVersion
+        displayName: 'Define version number'
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: $(Python.Version)
+              addToPath: true
+          - task: Bash@3
+            displayName: 'Update version number'
+            inputs:
+              targetType: 'inline'
+              script: 'sed -i ''s/1.0.0/$(Package.Version)/g'' arcus/ml/__init__.py'
+              failOnStderr: true
+          - task: CopyFiles@2
+            displayName: 'Copy build artifacts'
+            inputs:
+              contents: '**/*.py'
+              targetFolder: '$(Pipeline.Workspace)/build'
+          - task: PublishPipelineArtifact@0
+            displayName: 'Publish build artifacts'
+            inputs:
+              targetPath: '$(Pipeline.Workspace)/build'
+              artifactName: Build
 
-- task: Bash@3
-  displayName: 'Update version number'
-  inputs:
-    targetType: 'inline'
-    script: 'sed -i ''s/1.0.0/$(Package.Version)/g'' arcus/ml/__init__.py'
-    failOnStderr: true
+  - stage: UnitTests
+    displayName: Unit Tests
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - job: UnitTests
+        displayName: 'Run unit tests'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download build artifacts'
+            inputs:
+              artifact: 'Build'
+              path: '$(Build.SourcesDirectory)'
+          - script: pip install -r requirements.txt
+            displayName: 'Install requirements'
+          - script: |
+              pip install pytest
+              pip install pytest-cov
+              pip install hypothesis
+              pip install lazydocs
+              pytest tests --doctest-modules --junitxml=junit/test-results.xml --cov=. --cov-report=xml --cov-report=html
+            displayName: 'Unit tests (pytest)'
+          - task: PublishTestResults@2
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFiles: '**/test-*.xml'
+              testRunTitle: 'Publish test results for Python $(Python.Version)'
+          - task: PublishCodeCoverageResults@1
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+              reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
-- script: |    
-    python setup.py sdist bdist_wheel 
-  displayName: 'Artifact creation'
-
-- script: python -m pip install --upgrade twine
-  displayName: 'Install Twine'
-
-- task: TwineAuthenticate@1
-  inputs:
-    pythonUploadServiceConnection: 'Arcus ML PyPi feed'
-
-- template: github/create-release.yml@templates
-  parameters:
-    tag: '$(Package.Version)'
-    releaseTitle: '$(Package.Version)'
-    repositoryName: 'arcus-azure/arcus.ml'
-    releaseNotes: |
-      Install new version via [PyPi](https://pypi.org/project/arcus-ml/$(Package.Version))
-      ```shell
-      PM > pip install arcus-ml==$(Package.Version)
-      ```
-
-- script: |
-   python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
-  displayName: 'Publish to PyPi'
-
-- task: CopyFiles@2  
-  inputs:    
-    targetFolder: $(Build.ArtifactStagingDirectory)
-
-- task: PublishBuildArtifacts@1  
-  inputs:    
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'                  
-    ArtifactName: 'dist'    
-    publishLocation: 'Container'
+  - stage: Release
+    dependsOn: UnitTests
+    condition: succeeded()
+    jobs:
+      - job: PushToPyPi
+        displayName: 'Package wheel and push to PyPi'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download build artifacts'
+            inputs:
+              artifact: 'Build'
+              path: '$(Build.SourcesDirectory)'
+          - script: python -m pip install --upgrade pip setuptools wheel lazydocs twine
+            displayName: 'Install tools'
+          - script: python setup.py sdist bdist_wheel
+            displayName: 'Build wheels'
+          - task: TwineAuthenticate@1
+            inputs:
+              pythonUploadServiceConnection: 'Arcus ML PyPi feed'
+          - script: |
+              python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
+            displayName: 'Publish to PyPi'
+          - template: github/create-release.yml@templates
+            parameters:
+              tag: '$(Package.Version)'
+              releaseTitle: '$(Package.Version)'
+              repositoryName: 'arcus-azure/arcus.ml'
+              releaseNotes: |
+                Install the $(Project) package via [PyPi](https://pypi.org/project/arcus-ml/$(Package.Version)).
+                ```shell
+                PM > pip install arcus-ml==$(Package.Version)
+                ```
+                For a complete list of all the $(Project) functionality, see the [documentation](https://machine-learning.arcus-azure.net/).
+                ## What's new?
+                ### Features
+                * Provide the capability to do something (#123)
+                ### Fixes / Changes
+                None.
+                ### Breaking Changes
+                None.
+                ### Removal
+                None.
+          - task: CopyFiles@2
+            inputs:
+              targetFolder: $(Build.ArtifactStagingDirectory)
+          - task: PublishBuildArtifacts@1
+            inputs:
+              PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+              ArtifactName: 'dist'
+              publishLocation: 'Container'
