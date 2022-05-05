@@ -107,7 +107,7 @@ stages:
             inputs:
               artifact: 'Build'
               path: '$(Build.SourcesDirectory)'
-          - script: python -m pip install --upgrade pip setuptools wheel lazydocs twine
+          - script: python -m pip install --upgrade pip setuptools wheel lazydocs
             displayName: 'Install tools'
           - script: python setup.py sdist bdist_wheel 
             displayName: 'Build wheels'
