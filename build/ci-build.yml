@@ -114,7 +114,7 @@ stages:
           - task: TwineAuthenticate@1
             inputs:
               pythonUploadServiceConnection: 'Arcus ML MyGet feed'
-         - powershell: |
+          - powershell: |
               cd ./dist
               Get-ChildItem -Path . -Filter *.whl |
                 % { $form = "data=@$($_.Name)"
