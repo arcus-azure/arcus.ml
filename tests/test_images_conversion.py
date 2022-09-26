@@ -81,3 +81,32 @@ def test_black_white_conversion_2x3dshape():
     assert lung.shape == (30, 30, 1)
     lung = conv.to_blackwhite([lung], keep_3d_shape=True, threshold=200)
     assert lung[0].shape == (30, 30, 1)
+
+def test_prepare_square_example():
+    image = ami.load_images(image_path)[0]
+    result = conv.prepare(image, image_size=3)
+    assert result.shape == (3, 3, 3)
+
+@given(images())
+def test_prepare_without_size_or_grayscale_does_not_prepare(img):
+    result = conv.prepare(img)
+    assert np.array_equal(img, result)
+
+@given(images(), st.data())
+def test_prepare_square(img, data):
+    size = data.draw(st.integers(min_value=1, max_value=img.shape[0]))
+    result = conv.prepare(img, image_size=size)
+    assert result.shape == (size, size, img.shape[2])
+
+@given(images(), st.data())
+def test_prepare_rectangle(img, data):
+    width = data.draw(st.integers(min_value=1, max_value=img.shape[0]))
+    height = data.draw(st.integers(min_value=1, max_value=img.shape[1]))
+    result = conv.prepare(img, image_size=(width, height))
+    assert result.shape == (width, height, img.shape[2])
+    mylogger.debug(img.shape[0])
+
+@given(images(dimension=2), st.data())
+def test_prepare_convert_to_grey_with_3d_shape(img, data):
+    result = conv.prepare(img, convert_to_grey=True, keep_3d_shape=True)
+    assert result.shape == (img.shape[0], img.shape[1], 1)
