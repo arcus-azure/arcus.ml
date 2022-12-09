@@ -6,6 +6,8 @@ import arcus.ml.dataframes as adf
 import logging
 from unittest.mock import patch 
 from collections import Counter
+from hypothesis import given, strategies as st
+from hypothesis.extra.pandas import columns, data_frames
 
 logging.basicConfig(level=logging.DEBUG)
 mylogger = logging.getLogger()
@@ -22,18 +24,34 @@ def setup_module(module):
 def setup_function(func):
     ''' Setup for test functions '''
 
+@st.composite
+def cat_data(draw):
+    cols = draw(
+        st.lists(st.one_of(st.text(), st.integers()), min_size=1, unique=True)
+          .map(lambda xs : columns(xs, dtype=int)))
+    df = draw(data_frames(cols))
+    return df
 
-def test_shuffle():
-    # initialize list of lists 
+def test_shuffle_example():
     data = [['tom', 10], ['nick', 15], ['juli', 14]] 
-    
-    # Create the pandas DataFrame 
     test_df = pd.DataFrame(data, columns = ['Name', 'Age']) 
-    
-    # print dataframe. 
+
     shuffled_df = adf.shuffle(test_df)
     assert len(shuffled_df)==len(test_df)
     assert shuffled_df[shuffled_df.Name == 'nick'].iloc[0].Age == 15
+
+def assert_equal_dataframe_unsorted_rows(expected_df, actual_df):
+    def sort_rows(df):
+        return df.sort_values(by=df.columns.to_list()).reset_index(drop=True)
+    results = sort_rows(expected_df) == sort_rows(actual_df)
+    assert results.all(axis=None)
+
+@given(cat_data())
+def test_shuffle_property(input_df):
+    output_df = adf.shuffle(input_df)
+    assert len(output_df) == len(input_df)
+    assert output_df.shape == input_df.shape
+    assert_equal_dataframe_unsorted_rows(input_df, output_df)
 
 def test_one_hot_encoding_default():
     # Create the pandas DataFrame 
