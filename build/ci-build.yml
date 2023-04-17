@@ -26,6 +26,7 @@ resources:
       endpoint: arcus-azure
 
 variables:
+  - group: 'MyGet'
   - template: ./variables/build.yml
 
 pool:
@@ -98,24 +99,28 @@ stages:
     dependsOn: UnitTests
     condition: succeeded()
     jobs:
-      - job: PushToPyPi
-        displayName: 'Package wheel and push to PyPi'
+      - job: PushToMyGet
+        displayName: 'Package wheel and push to MyGet'
         steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Download build artifacts'
             inputs:
               artifact: 'Build'
               path: '$(Build.SourcesDirectory)'
-          - script: python -m pip install --upgrade pip setuptools wheel lazydocs twine
+          - script: python -m pip install --upgrade pip setuptools wheel lazydocs
             displayName: 'Install tools'
           - script: python setup.py sdist bdist_wheel 
             displayName: 'Build wheels'
-          - task: TwineAuthenticate@1
-            inputs:
-              pythonUploadServiceConnection: 'Arcus ML PyPi feed'
-          - script: python -m twine upload --skip-existing --verbose -r 'arcus-ml' --config-file $(PYPIRC_PATH) dist/*
-            displayName: 'Publish to PyPi dev'
-            condition: succeededOrFailed()
+          - powershell: |
+              cd ./dist
+              Get-ChildItem -Path . -Filter *.whl |
+                % { $form = "data=@$($_.Name)"
+                    Write-Host "Pushing $($_.Name) as form $($form) to MyGet"
+                    $header = "Authorization: Bearer " + $env:APIKEY
+                    curl -v -k -X POST https://www.myget.org/F/arcus/python/upload -H $header -F $form --show-error --fail }
+            displayName: 'Publish to MyGet'
+            env:
+              APIKEY: $(MyGet.ApiKey)
           - task: CopyFiles@2
             inputs:
               targetFolder: $(Build.ArtifactStagingDirectory)
